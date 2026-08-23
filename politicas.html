@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Política de Privacidad — LaVisualMK SocialBot</title>
+<style>
+  :root{
+    --ink:#1c1b19;
+    --paper:#fbfaf7;
+    --line:#e4e0d8;
+    --accent:#2f4f3f;
+    --accent-soft:#eef2ee;
+    --muted:#6b6a66;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Georgia','Iowan Old Style',serif;
+    line-height:1.65;
+  }
+  .wrap{
+    max-width:760px;
+    margin:0 auto;
+    padding:72px 24px 120px;
+  }
+  header{
+    border-bottom:2px solid var(--ink);
+    padding-bottom:28px;
+    margin-bottom:48px;
+  }
+  .eyebrow{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.14em;
+    font-size:12px;
+    color:var(--accent);
+    font-weight:700;
+    margin-bottom:10px;
+  }
+  h1{
+    font-size:clamp(28px,4vw,40px);
+    margin:0 0 12px;
+    letter-spacing:-0.01em;
+  }
+  .meta{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:13px;
+    color:var(--muted);
+  }
+  h2{
+    font-size:20px;
+    margin:44px 0 12px;
+    padding-top:2px;
+  }
+  h2 .num{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    color:var(--accent);
+    font-size:13px;
+    letter-spacing:.08em;
+    display:block;
+    margin-bottom:4px;
+  }
+  p, li{
+    font-size:16.5px;
+    color:#3a3936;
+  }
+  ul{padding-left:22px;}
+  li{margin-bottom:6px;}
+  .callout{
+    background:var(--accent-soft);
+    border-left:3px solid var(--accent);
+    padding:16px 20px;
+    margin:20px 0;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:14.5px;
+    color:#33413a;
+  }
+  a{color:var(--accent);}
+  .contact-box{
+    margin-top:56px;
+    padding:24px;
+    border:1px solid var(--line);
+    border-radius:4px;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:14.5px;
+  }
+  .contact-box strong{display:block;font-size:15px;margin-bottom:6px;}
+  footer{
+    margin-top:64px;
+    padding-top:20px;
+    border-top:1px solid var(--line);
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:12.5px;
+    color:var(--muted);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">La Visual Marketing — Tráfego e Estratégia</div>
+    <h1>Política de Privacidad</h1>
+    <div class="meta">Aplica a la herramienta <strong>LaVisualMK SocialBot</strong> · Última actualización: 12 de julio de 2026</div>
+  </header>
+
+  <p>Esta política explica qué datos recolecta LaVisualMK SocialBot al conectarse con las páginas de Facebook e Instagram de nuestros clientes, para qué los usamos y cómo los protegemos. LaVisualMK SocialBot es una herramienta interna de La Visual Marketing que automatiza respuestas a comentarios y mensajes directos en Facebook e Instagram cuando detecta palabras clave definidas por cada cliente.</p>
+
+  <h2><span class="num">01</span>Qué datos recolectamos</h2>
+  <ul>
+    <li>Identificadores públicos de la página o cuenta de Instagram conectada (Page ID, Instagram Business ID, nombre de la página).</li>
+    <li>El texto de comentarios públicos y mensajes directos recibidos en esas páginas, únicamente para detectar si contienen una palabra clave configurada.</li>
+    <li>Identificadores de la persona que comenta o escribe (ID de usuario de Facebook/Instagram), necesarios para poder responderle.</li>
+    <li>Tokens de acceso (access tokens) que Meta emite al conectar la página, usados exclusivamente para publicar la respuesta automática en nombre del cliente.</li>
+  </ul>
+  <div class="callout">No recolectamos datos de personas que no interactúan públicamente (comentando o escribiendo) con las páginas conectadas, ni accedemos a información privada del perfil de quien comenta más allá de su identificador público.</div>
+
+  <h2><span class="num">02</span>Para qué usamos estos datos</h2>
+  <ul>
+    <li>Detectar automáticamente si un comentario o mensaje contiene una palabra clave configurada por el cliente (por ejemplo, "info").</li>
+    <li>Publicar una respuesta automática predefinida por el cliente cuando hay coincidencia.</li>
+    <li>Llevar un registro interno (log) de qué interacciones fueron respondidas, con fines de auditoría y soporte técnico.</li>
+  </ul>
+  <p>No usamos estos datos para publicidad, no los vendemos, y no los compartimos con terceros salvo lo estrictamente necesario para el funcionamiento del servicio (ver sección siguiente).</p>
+
+  <h2><span class="num">03</span>Dónde se almacenan y con quién se comparten</h2>
+  <p>Los datos se almacenan en una base de datos gestionada por <strong>Supabase</strong> (proveedor de infraestructura cloud), protegida con controles de acceso restringidos por cliente. La única comunicación saliente que hace el sistema es hacia la <strong>Graph API de Meta</strong>, para publicar la respuesta automática correspondiente. No compartimos estos datos con ningún otro proveedor externo.</p>
+
+  <h2><span class="num">04</span>Conservación y eliminación de datos</h2>
+  <p>Conservamos el registro de interacciones y los tokens de acceso mientras la cuenta del cliente permanezca activa en LaVisualMK SocialBot. Cualquier persona puede solicitar la eliminación de sus datos (por ejemplo, el registro de un comentario propio) escribiéndonos al contacto indicado abajo; procesamos estas solicitudes en un plazo razonable.</p>
+
+  <h2><span class="num">05</span>Seguridad</h2>
+  <p>El acceso a los tokens y datos almacenados está restringido mediante autenticación y políticas de seguridad a nivel de base de datos (Row Level Security), de forma que cada cliente solo puede ver su propia información.</p>
+
+  <h2><span class="num">06</span>Cambios a esta política</h2>
+  <p>Podemos actualizar esta política ocasionalmente para reflejar cambios en el servicio o en los requisitos de Meta. La fecha de última actualización se indica arriba.</p>
+
+  <div class="contact-box">
+    <strong>Contacto</strong>
+    Para consultas sobre privacidad o para solicitar la eliminación de tus datos, escribinos a
+    <a href="mailto:lavisualmk@alastecno.com">lavisualmk@alastecno.com</a>.
+  </div>
+
+  <footer>
+    La Visual Marketing Tráfego e Estratégia — LaVisualMK SocialBot
+  </footer>
+
+</div>
+</body>
+</html>

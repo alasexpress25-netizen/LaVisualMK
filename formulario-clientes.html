@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <!-- ═══════════════════════════════════════════════
+       SEO — formulário interno: não indexar
+  ═══════════════════════════════════════════════ -->
+  <title>Cadastro de Clientes | LaVisualMk</title>
+  <meta name="description" content="Preencha o formulário para se cadastrar e entrar em contato com a LaVisualMk.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="https://lavisualmk.alastecno.com/formulario-clientes.html">
+
+  <!-- ═══════════════════════════════════════════════
+       JSON-LD: WebPage (BreadcrumbList)
+  ═══════════════════════════════════════════════ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Início", "item": "https://lavisualmk.alastecno.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Cadastro de Clientes", "item": "https://lavisualmk.alastecno.com/formulario-clientes.html" }
+    ]
+  }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <style>
+    /* ─── RESET & BASE ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --white:   #FFFFFF;
+      --gold:    #C9A244;
+      --gold2:   #e8c96a;
+      --gold-dim: rgba(201,162,68,.15);
+      --black:   #020202;
+      --dark:    #0a0a0a;
+      --dark2:   #111111;
+      --dark3:   #1a1a1a;
+      --muted:   rgba(255,255,255,.4);
+      --muted2:  rgba(255,255,255,.6);
+      --border:  rgba(201,162,68,.18);
+      --border2: rgba(201,162,68,.35);
+      --err:     #e05252;
+      --ok:      #4caf7d;
+      --ok-bg:   rgba(76,175,125,.12);
+      --r:       4px;
+      --font-title: 'Cinzel', serif;
+      --font-body:  'Montserrat', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--black);
+      color: var(--white);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ─── CUSTOM CURSOR ────────────────────────────────────── */
+    .cursor {
+      position: fixed; top: 0; left: 0;
+      width: 10px; height: 10px;
+      background: var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: width .2s, height .2s;
+    }
+    .cursor-ring {
+      position: fixed; top: 0; left: 0;
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%,-50%);
+      transition: all .12s ease-out;
+      opacity: .55;
+    }
+
+    /* ─── GRID BACKGROUND ──────────────────────────────────── */
+    .page-bg {
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 30%, rgba(201,162,68,.06) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(201,162,68,.03) 0%, transparent 60%);
+    }
+    .page-grid {
+      position: fixed; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(201,162,68,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,162,68,.035) 1px, transparent 1px);
+      background-size: 80px 80px;
+      animation: gridMove 20s linear infinite;
+    }
+    @keyframes gridMove {
+      from { transform: translateY(0); }
+      to   { transform: translateY(80px); }
+    }
+
+    /* ─── LOADING OVERLAY ──────────────────────────────────── */
+    #loading-overlay {
+      position: fixed; inset: 0;
+      background: var(--black);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 1.2rem;
+      z-index: 1000;
+      transition: opacity .35s ease;
+    }
+    #loading-overlay.hide { opacity: 0; pointer-events: none; }
+    .loading-ring {
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 2px solid var(--border);
+      border-top-color: var(--gold);
+      animation: spin .75s linear infinite;
+    }
+    #loading-overlay p {
+      font-family: var(--font-body);
+      font-size: .72rem; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ─── CARD ─────────────────────────────────────────────── */
+    .card {
+      position: relative; z-index: 10;
+      background: var(--dark2);
+      border: 1px solid var(--border);
+      width: 100%; max-width: 520px;
+      overflow: hidden;
+      animation: cardUp .6s cubic-bezier(.22,1,.36,1) both;
+      box-shadow:
+        0 0 0 1px rgba(201,162,68,.06),
+        0 24px 80px rgba(0,0,0,.6),
+        inset 0 1px 0 rgba(201,162,68,.1);
+    }
+    @keyframes cardUp {
+      from { opacity: 0; transform: translateY(28px) scale(.98); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* ─── CARD HEADER ───────────────────────────────────────── */
+    .card-header {
+      padding: 2.6rem 2.8rem 2.2rem;
+      position: relative; overflow: hidden;
+      background: var(--dark3);
+      border-bottom: 1px solid var(--border);
+    }
+    .card-header::before {
+      content: '';
+      position: absolute; top: -60px; right: -60px;
+      width: 240px; height: 240px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,162,68,.08) 0%, transparent 70%);
+    }
+    .card-header::after {
+      content: '';
+      position: absolute; bottom: -30px; left: 40px;
+      width: 140px; height: 140px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,162,68,.04) 0%, transparent 70%);
+    }
+    .header-eyebrow {
+      font-family: var(--font-body);
+      font-size: .65rem; font-weight: 600;
+      letter-spacing: .3em; text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--border2);
+      display: inline-block;
+      padding: .32rem 1rem;
+      margin-bottom: 1.2rem;
+    }
+    .gold-line {
+      width: 40px; height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      margin-bottom: 1rem;
+      display: none;
+    }
+    .card-header h1 {
+      font-family: var(--font-title);
+      color: var(--white);
+      font-size: 1.75rem; font-weight: 700;
+      letter-spacing: .02em; line-height: 1.2;
+    }
+    .card-header h1 .accent { color: var(--gold); }
+    .card-header p {
+      color: var(--muted2);
+      font-size: .83rem; margin-top: .6rem;
+      font-weight: 300; line-height: 1.65;
+    }
+
+    /* ─── STEP DOTS ─────────────────────────────────────────── */
+    #steps-bar { padding: 0 2.8rem; padding-top: 1.8rem; }
+    .steps { display: flex; align-items: center; gap: .4rem; margin-bottom: .2rem; }
+    .step-dot {
+      width: 30px; height: 30px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .72rem; font-weight: 700;
+      border: 1.5px solid var(--border);
+      color: var(--muted); flex-shrink: 0;
+      transition: all .3s ease;
+      font-family: var(--font-body);
+    }
+    .step-dot.active { background: var(--gold); border-color: var(--gold); color: var(--black); }
+    .step-dot.done   { background: var(--ok); border-color: var(--ok); color: var(--white); }
+    .step-line {
+      flex: 1; height: 1px;
+      background: var(--border);
+      position: relative; overflow: hidden;
+    }
+    .step-line::after {
+      content: ''; position: absolute; inset: 0;
+      background: var(--ok);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .4s ease;
+    }
+    .step-line.done::after { transform: scaleX(1); }
+
+    /* ─── CARD BODY ─────────────────────────────────────────── */
+    .card-body { padding: 2rem 2.8rem 2.4rem; }
+    .form-section { display: none; }
+    .form-section.active { display: block; animation: slideIn .3s ease; }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(10px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* ─── FIELDS ────────────────────────────────────────────── */
+    .field { margin-bottom: 1.3rem; }
+    label {
+      display: block;
+      font-size: .68rem; font-weight: 600;
+      color: var(--gold);
+      text-transform: uppercase; letter-spacing: .12em;
+      margin-bottom: .5rem;
+      font-family: var(--font-body);
+    }
+    label .req { color: var(--err); margin-left: 2px; }
+
+    input[type=text],
+    input[type=email],
+    input[type=tel],
+    select {
+      width: 100%; padding: .82rem 1rem;
+      background: var(--dark);
+      border: 1px solid var(--border);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: .92rem; font-weight: 400;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      -webkit-appearance: none; appearance: none;
+      border-radius: 0;
+    }
+    input::placeholder { color: rgba(255,255,255,.22); }
+    input:focus, select:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,162,68,.1);
+      background: #0d0d0d;
+    }
+    input.has-err, select.has-err {
+      border-color: var(--err);
+      box-shadow: 0 0 0 3px rgba(224,82,82,.08);
+    }
+    input.has-ok { border-color: var(--ok); }
+
+    select { cursor: pointer; }
+    select option { background: var(--dark3); color: var(--white); }
+
+    .hint {
+      font-size: .73rem; color: var(--muted);
+      margin-top: .38rem; line-height: 1.5;
+    }
+    .field-err {
+      font-size: .72rem; color: var(--err);
+      margin-top: .38rem; display: none;
+    }
+    .field-err.show { display: block; }
+
+    .phone-wrap { display: flex; gap: .5rem; }
+    select.prefix { width: 130px; flex-shrink: 0; font-size: .83rem; }
+
+    .email-row { display: flex; gap: .5rem; }
+    .email-row input { flex: 1; min-width: 0; }
+
+    /* ─── VERIFY BOX ────────────────────────────────────────── */
+    .verify-box {
+      background: rgba(76,175,125,.06);
+      border: 1px solid rgba(76,175,125,.25);
+      padding: 1.2rem 1.3rem;
+      margin-bottom: 1.25rem; display: none;
+    }
+    .verify-box.show { display: block; animation: slideIn .3s ease; }
+    .vb-title {
+      font-weight: 600; font-size: .85rem;
+      color: var(--ok); margin-bottom: .45rem;
+      font-family: var(--font-body);
+    }
+    .verify-box p {
+      font-size: .8rem; color: rgba(255,255,255,.6);
+      line-height: 1.6; margin-bottom: .85rem;
+    }
+    .or-divider {
+      display: flex; align-items: center; gap: .6rem;
+      font-size: .7rem; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .5px;
+      margin: .85rem 0;
+    }
+    .or-divider::before, .or-divider::after {
+      content: ''; flex: 1; height: 1px;
+      background: var(--border);
+    }
+    .code-row { display: flex; gap: .5rem; }
+    .code-input {
+      flex: 1; letter-spacing: 8px; font-size: 1.4rem;
+      font-weight: 700; text-align: center;
+      background: var(--dark) !important;
+      font-family: var(--font-body);
+    }
+    .resend-row { font-size: .75rem; color: var(--muted); margin-top: .65rem; }
+    .resend-row button {
+      background: none; border: none; cursor: none;
+      color: var(--gold); font-weight: 600;
+      font-family: var(--font-body); font-size: .75rem;
+      padding: 0; text-decoration: underline;
+    }
+    .resend-row button:disabled { color: var(--muted); text-decoration: none; cursor: default; }
+    #countdown { font-weight: 700; color: var(--gold2); }
+
+    /* ─── MAGIC LINK BANNER ─────────────────────────────────── */
+    .magic-banner {
+      background: rgba(201,162,68,.07);
+      border: 1px solid var(--border2);
+      padding: 1rem 1.2rem;
+      margin-bottom: 1.25rem; display: none;
+      font-size: .85rem; color: var(--gold2); line-height: 1.5;
+    }
+    .magic-banner.show { display: block; animation: slideIn .3s ease; }
+    .magic-banner strong { display: block; margin-bottom: .25rem; font-size: .9rem; }
+
+    /* ─── BADGE ─────────────────────────────────────────────── */
+    .badge {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .3rem .9rem;
+      font-size: .72rem; font-weight: 600; margin-bottom: 1rem;
+      font-family: var(--font-body);
+      letter-spacing: .06em; text-transform: uppercase;
+    }
+    .badge-ok   { background: var(--ok-bg); color: var(--ok); border: 1px solid rgba(76,175,125,.3); }
+    .badge-warn { background: rgba(201,162,68,.08); color: var(--gold2); border: 1px solid var(--border); }
+
+    /* ─── BUTTONS ────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: .45rem; padding: .82rem 1.4rem;
+      font-family: var(--font-body);
+      font-size: .85rem; font-weight: 600;
+      cursor: none; border: none;
+      transition: all .2s ease;
+      letter-spacing: .08em; text-transform: uppercase;
+    }
+    .btn-primary {
+      background: var(--gold);
+      color: var(--black);
+      width: 100%; padding: 1rem;
+      font-size: .85rem; margin-top: .2rem;
+      position: relative; overflow: hidden;
+    }
+    .btn-primary::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(255,255,255,.08);
+      opacity: 0;
+      transition: opacity .2s;
+    }
+    .btn-primary:hover:not(:disabled)::after { opacity: 1; }
+    .btn-primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(201,162,68,.3); }
+    .btn-primary:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .btn-outline:hover:not(:disabled) { background: var(--gold); color: var(--black); }
+    .btn-outline:disabled { opacity: .35; cursor: not-allowed; }
+
+    .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(0,0,0,.25);
+      border-top-color: var(--black);
+      border-radius: 50%;
+      animation: spin .65s linear infinite; display: none;
+    }
+    .spinner.show { display: inline-block; }
+
+    .back-link {
+      text-align: center; font-size: .78rem;
+      color: var(--muted); margin-top: 1rem;
+    }
+    .back-link a {
+      color: var(--gold); font-weight: 500;
+      text-decoration: none; cursor: none;
+    }
+    .back-link a:hover { text-decoration: underline; }
+
+    /* ─── REMEMBER LABEL ─────────────────────────────────────── */
+    .remember-label {
+      display: flex; align-items: center; gap: .5rem;
+      font-size: .8rem; color: var(--muted);
+      cursor: none; margin-bottom: 1rem;
+    }
+    .remember-label input[type=checkbox] {
+      width: 14px; height: 14px; cursor: none;
+      accent-color: var(--gold);
+    }
+
+    /* ─── CONSENT BLOCKS ─────────────────────────────────────── */
+    .consent-divider {
+      font-size: .65rem; text-transform: uppercase;
+      letter-spacing: .15em; color: var(--muted);
+      font-weight: 600; margin-bottom: .7rem;
+      display: flex; align-items: center; gap: .7rem;
+    }
+    .consent-divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+    .consent-block {
+      background: rgba(255,255,255,.02);
+      border: 1px solid var(--border);
+      padding: 1.1rem 1.2rem;
+      margin-bottom: .85rem;
+      transition: border-color .2s;
+    }
+    .consent-block.has-err { border-color: var(--err); background: rgba(224,82,82,.04); }
+    .consent-row {
+      display: flex; align-items: flex-start;
+      gap: .75rem; cursor: none;
+    }
+    .consent-row input[type=checkbox] {
+      width: 16px; height: 16px; flex-shrink: 0;
+      margin-top: 3px; accent-color: var(--gold); cursor: none;
+    }
+    .consent-text { font-size: .78rem; color: rgba(255,255,255,.65); line-height: 1.6; }
+    .consent-text strong { color: var(--gold2); font-weight: 600; }
+    .consent-text a { color: var(--gold); text-decoration: underline; }
+    .consent-err {
+      font-size: .72rem; color: var(--err);
+      margin-top: .5rem; display: none; padding-left: 2rem;
+    }
+    .consent-err.show { display: block; }
+
+    /* ─── SCREENS: SUCCESS & REGISTERED ─────────────────────── */
+    #success-screen { display: none; text-align: center; padding: 3.5rem 2.5rem; }
+    #success-screen.show { display: block; animation: cardUp .5s ease; }
+    .check-circle {
+      width: 72px; height: 72px;
+      border: 2px solid var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-size: 1.8rem; color: var(--gold);
+      position: relative;
+    }
+    .check-circle::before {
+      content: '';
+      position: absolute; inset: 6px;
+      background: rgba(201,162,68,.08);
+    }
+    #success-screen h2 {
+      font-family: var(--font-title);
+      font-size: 1.6rem; color: var(--white); margin-bottom: .7rem;
+    }
+    #success-screen h2 span { color: var(--gold); }
+    #success-screen p { color: var(--muted2); font-size: .88rem; line-height: 1.75; }
+
+    #registered-screen { display: none; text-align: center; padding: 3.5rem 2.5rem; }
+    #registered-screen.show { display: block; animation: cardUp .5s ease; }
+    .registered-circle {
+      width: 72px; height: 72px;
+      border: 2px solid var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-size: 1.8rem; color: var(--gold);
+    }
+    #registered-screen h2 {
+      font-family: var(--font-title);
+      font-size: 1.6rem; color: var(--white); margin-bottom: .7rem;
+    }
+    #registered-screen p { color: var(--muted2); font-size: .88rem; line-height: 1.75; }
+
+    /* ─── SCREEN 0 INTRO TEXT ────────────────────────────────── */
+    .screen-intro {
+      font-size: .84rem; color: var(--muted2);
+      margin-bottom: 1.5rem; line-height: 1.7;
+    }
+
+    /* ─── MODAL LEGAL ────────────────────────────────────────── */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(2,2,2,.82);
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+      display: flex; align-items: flex-end; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity .25s ease;
+    }
+    @media(min-width:560px) { .modal-overlay { align-items: center; } }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal-box {
+      background: var(--dark3);
+      border: 1px solid var(--border);
+      width: 100%; max-width: 600px; max-height: 88vh;
+      display: flex; flex-direction: column;
+      box-shadow: 0 -8px 60px rgba(0,0,0,.5);
+      transform: translateY(30px);
+      transition: transform .3s cubic-bezier(.34,1.2,.64,1);
+      overflow: hidden;
+    }
+    @media(min-width:560px) {
+      .modal-box { max-height: 80vh; transform: translateY(20px) scale(.97); }
+    }
+    .modal-overlay.open .modal-box { transform: translateY(0) scale(1); }
+    .modal-handle {
+      width: 36px; height: 3px;
+      background: var(--border); margin: 10px auto 0; flex-shrink: 0;
+    }
+    @media(min-width:560px) { .modal-handle { display: none; } }
+    .modal-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 1.5rem .9rem;
+      border-bottom: 1px solid var(--border); flex-shrink: 0;
+    }
+    .modal-title {
+      font-family: var(--font-title);
+      font-size: 1rem; font-weight: 600; color: var(--gold);
+    }
+    .modal-close {
+      width: 30px; height: 30px;
+      background: rgba(255,255,255,.05); border: 1px solid var(--border);
+      cursor: none; display: flex;
+      align-items: center; justify-content: center;
+      font-size: 1rem; color: var(--muted);
+      transition: background .15s, color .15s; flex-shrink: 0;
+    }
+    .modal-close:hover { background: var(--border); color: var(--white); }
+    .modal-body {
+      overflow-y: auto; padding: 1.4rem 1.5rem 1.8rem;
+      flex: 1; -webkit-overflow-scrolling: touch;
+    }
+    .modal-body h2 {
+      font-family: var(--font-title);
+      font-size: .9rem; color: var(--gold);
+      margin: 1.4rem 0 .5rem; font-weight: 600;
+    }
+    .modal-body h2:first-child { margin-top: 0; }
+    .modal-body p { font-size: .8rem; line-height: 1.8; color: rgba(255,255,255,.6); margin-bottom: .7rem; }
+    .modal-body ul { padding-left: 1.2rem; margin-bottom: .7rem; }
+    .modal-body li { font-size: .8rem; line-height: 1.75; color: rgba(255,255,255,.6); }
+    .modal-body strong { color: var(--gold2); font-weight: 600; }
+    .modal-body .law-line {
+      font-size: .72rem; color: var(--muted);
+      background: rgba(201,162,68,.06);
+      border: 1px solid var(--border);
+      padding: .5rem .8rem;
+      margin: .8rem 0; line-height: 1.6;
+    }
+    .modal-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: .8rem; flex-shrink: 0;
+    }
+    .modal-footer-note { font-size: .72rem; color: var(--muted); line-height: 1.4; flex: 1; }
+    .btn-modal-close {
+      background: var(--gold); color: var(--black);
+      border: none; padding: .65rem 1.4rem;
+      font-family: var(--font-body);
+      font-size: .8rem; font-weight: 700;
+      cursor: none; white-space: nowrap; flex-shrink: 0;
+      letter-spacing: .08em; text-transform: uppercase;
+      transition: background .2s;
+    }
+    .btn-modal-close:hover { background: var(--gold2); }
+    .policy-link {
+      color: var(--gold); text-decoration: underline;
+      cursor: none; font-weight: 600; background: none;
+      border: none; font-family: inherit; font-size: inherit; padding: 0;
+    }
+    .policy-link:hover { color: var(--gold2); }
+
+    /* ─── CREDIT ─────────────────────────────────────────────── */
+    .la-credit {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 10px 0 14px;
+      border-top: 1px solid var(--border);
+      margin-top: auto;
+    }
+    .la-credit-label {
+      font-size: .58rem; letter-spacing: .16em;
+      text-transform: uppercase; color: rgba(255,255,255,.25);
+      font-family: var(--font-body);
+    }
+    .la-credit-link {
+      display: flex; align-items: center;
+      opacity: .5; transition: opacity .2s, transform .2s;
+    }
+    .la-credit-link:hover { opacity: .85; transform: scale(1.05); }
+    .la-credit-link img { height: 26px; width: auto; filter: brightness(0) invert(1) opacity(.4); }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────── */
+    @media(max-width:560px) {
+      body { padding: 0; align-items: flex-start; }
+      .card { border-left: none; border-right: none; min-height: 100vh; box-shadow: none; }
+      .card-header { padding: 2rem 1.5rem 1.6rem; }
+      .card-header h1 { font-size: 1.45rem; }
+      .card-body { padding: 1.6rem 1.5rem 2rem; }
+      #steps-bar { padding: 0 1.5rem; padding-top: 1.6rem; }
+      .email-row { flex-direction: column; gap: .5rem; }
+      .email-row .btn-outline { width: 100%; }
+      .phone-wrap { gap: .4rem; }
+      select.prefix { width: 115px; }
+      input[type=text],input[type=email],input[type=tel],select { font-size: 1rem; padding: .88rem 1rem; }
+      .btn-primary { padding: 1rem; font-size: .9rem; }
+      .code-input { font-size: 1.2rem; letter-spacing: 5px; }
+      #registered-screen, #success-screen { padding: 3rem 1.5rem; }
+    }
+    @media(max-width:380px) {
+      .card-header h1 { font-size: 1.25rem; }
+      select.prefix { width: 100px; font-size: .78rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Cursor personalizado -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<!-- Fondo con grilla -->
+<div class="page-bg"></div>
+<div class="page-grid"></div>
+
+<!-- Loading overlay -->
+<div id="loading-overlay">
+  <div class="loading-ring"></div>
+  <p>Verificando sessão…</p>
+</div>
+
+<div class="card">
+
+  <div class="card-header">
+    <div class="header-eyebrow">LaVisualMk · Marketing Digital</div>
+    <h1>Junte-se à<br><span class="accent">LaVisualMk</span></h1>
+    <p>Cadastre-se e acesse estratégias, recursos e novidades de marketing digital para fazer sua marca crescer.</p>
+  </div>
+
+  <div class="card-body" id="form-area">
+
+    <!-- ══ TELA 0: E-MAIL PRIMEIRO ══ -->
+    <div id="screen-email" class="form-section active">
+      <p class="screen-intro">
+        Insira seu e-mail para começar. Se você já se cadastrou antes, reconhecemos você automaticamente.
+      </p>
+      <div class="field">
+        <label>E-mail <span class="req">*</span></label>
+        <input type="email" id="email-check" placeholder="voce@email.com"
+               autocomplete="email"
+               onkeydown="if(event.key==='Enter')checkEmail()"/>
+        <div class="field-err" id="err-email-check">Insira um e-mail válido.</div>
+      </div>
+
+      <label class="remember-label">
+        <input type="checkbox" id="remember-me"/>
+        Lembrar meu e-mail neste dispositivo
+      </label>
+
+      <button class="btn btn-primary" id="btn-check" onclick="checkEmail()" data-track="form-verificar-email">
+        <span class="spinner" id="spinner-check"></span>
+        <span id="btn-check-text">Continuar &nbsp;→</span>
+      </button>
+    </div>
+
+    <!-- ══ PASSOS (somente para novos usuários) ══ -->
+    <div id="steps-bar" style="display:none">
+      <div class="steps">
+        <div class="step-dot active" id="dot1">1</div>
+        <div class="step-line" id="line1"></div>
+        <div class="step-dot" id="dot2">2</div>
+      </div>
+    </div>
+
+    <!-- ══ PASSO 1: DADOS PESSOAIS ══ -->
+    <div class="form-section" id="step1">
+
+      <div class="field">
+        <label>Nome completo <span class="req">*</span></label>
+        <input type="text" id="nombre" placeholder="Ana Garcia" autocomplete="name"
+               onblur="if(this.value.trim()) upsertAbandonedLead({ email: emailFromScreen0, nombre: this.value.trim(), paso_maximo: 'step1' })"/>
+        <div class="field-err" id="err-nombre">Insira seu nome e sobrenome.</div>
+      </div>
+
+      <div class="field">
+        <label>Telefone <span class="req">*</span></label>
+        <div class="phone-wrap">
+          <select class="prefix" id="phone-prefix">
+            <option value="+54">🇦🇷 +54</option>
+            <option value="+1">🇺🇸 +1</option>
+            <option value="+34">🇪🇸 +34</option>
+            <option value="+52">🇲🇽 +52</option>
+            <option value="+55">🇧🇷 +55</option>
+            <option value="+56">🇨🇱 +56</option>
+            <option value="+57">🇨🇴 +57</option>
+            <option value="+51">🇵🇪 +51</option>
+            <option value="+598">🇺🇾 +598</option>
+            <option value="+595">🇵🇾 +595</option>
+            <option value="+591">🇧🇴 +591</option>
+            <option value="+593">🇪🇨 +593</option>
+            <option value="+58">🇻🇪 +58</option>
+            <option value="+44">🇬🇧 +44</option>
+            <option value="+49">🇩🇪 +49</option>
+            <option value="+33">🇫🇷 +33</option>
+            <option value="+39">🇮🇹 +39</option>
+          </select>
+          <input type="tel" id="telefono" placeholder="11 2345 6789"
+                 oninput="this.value=this.value.replace(/[^\d\s\-]/g,'')"
+                 onblur="if(this.value.trim()){ const d=this.value.replace(/\D/g,''); const p=document.getElementById('phone-prefix').value; upsertAbandonedLead({ email: emailFromScreen0, telefono: p+d, paso_maximo: 'step1' }); }"/>
+        </div>
+        <div class="hint">Sem o 0 ou 15 inicial. Ex: 11 2345 6789</div>
+        <div class="field-err" id="err-telefono">O número deve ter entre 6 e 12 dígitos.</div>
+      </div>
+
+      <div class="consent-divider">🔒 Consentimentos necessários</div>
+
+      <div class="consent-block" id="block-datos">
+        <label class="consent-row">
+          <input type="checkbox" id="consent-datos" onchange="clearConsentErr('block-datos','err-datos')"/>
+          <span class="consent-text">
+            <strong>Proteção de dados pessoais</strong><br/>
+            Aceito que a <em>LaVisualMk</em> colete e processe meus dados para entrar em contato comigo e enviar
+            conteúdo de marketing digital, conforme a
+            <button type="button" class="policy-link" onclick="openModal('modal-privacidad')" data-track="modal-politica-privacidade">Política de Privacidade</button>.
+            <br/>
+            <span style="color:var(--muted);font-size:.72rem">
+              GDPR · LGPD Brasil · Lei 25.326 Argentina · normativas locais aplicáveis.
+            </span>
+          </span>
+        </label>
+        <div class="consent-err" id="err-datos">⚠ Precisamos do seu consentimento para continuar.</div>
+      </div>
+
+      <div class="consent-block" id="block-imagen">
+        <label class="consent-row">
+          <input type="checkbox" id="consent-imagen" onchange="clearConsentErr('block-imagen','err-imagen')"/>
+          <span class="consent-text">
+            <strong>Uso de imagem (opcional)</strong><br/>
+            Autorizo o uso de fotografias ou gravações nas quais eu possa aparecer,
+            para fins institucionais e de comunicação, conforme os
+            <button type="button" class="policy-link" onclick="openModal('modal-terminos')" data-track="modal-termos-condicoes">Termos e Condições</button>.
+            Revogável a qualquer momento.
+          </span>
+        </label>
+        <div class="consent-err" id="err-imagen"></div>
+      </div>
+
+      <button class="btn btn-primary" onclick="goStep2()" data-track="form-continuar-step2">Continuar &nbsp;→</button>
+      <div class="back-link"><a href="#" onclick="goScreenEmail(event)">← Alterar e-mail</a></div>
+    </div>
+
+    <!-- ══ PASSO 2: VERIFICAR E-MAIL ══ -->
+    <div class="form-section" id="step2">
+
+      <div class="magic-banner" id="magic-banner">
+        <strong>✅ E-mail confirmado pelo link!</strong>
+        Sua caixa <span id="magic-email"></span> foi verificada com sucesso.
+        Agora você pode concluir seu cadastro.
+      </div>
+
+      <div class="field">
+        <label>E-mail</label>
+        <div class="email-row">
+          <input type="email" id="email" autocomplete="email"
+                 style="background:#050505;cursor:default" readonly
+                 oninput="onEmailChange()"/>
+          <button class="btn btn-outline" id="btn-send" onclick="sendOTP()" data-track="form-enviar-otp">
+            Enviar código
+          </button>
+        </div>
+        <div class="hint">
+          <strong style="color:var(--gold2)">A)</strong> Clique no link que enviamos para o seu e-mail.<br/>
+          <strong style="color:var(--gold2)">B)</strong> Insira o código de 6 dígitos do mesmo e-mail.
+        </div>
+        <div class="field-err" id="err-email">Insira um e-mail válido.</div>
+      </div>
+
+      <div class="verify-box" id="verify-box">
+        <div class="vb-title">📬 E-mail enviado para <span id="email-sent-to"></span></div>
+        <p>
+          O e-mail tem <strong>duas opções</strong> para verificar:<br/>
+          um link clicável e um código de 6 dígitos. Expira em <span id="countdown">10:00</span>.
+        </p>
+        <div class="or-divider">ou insira o código manualmente</div>
+        <div class="code-row">
+          <input class="code-input" type="text" id="code-input"
+                 maxlength="6" placeholder="000000"
+                 oninput="this.value=this.value.replace(/\D/g,'');onCodeInput()"/>
+          <button class="btn btn-outline" onclick="verifyOTP()" data-track="form-confirmar-otp">Confirmar</button>
+        </div>
+        <div class="field-err" id="err-code" style="margin-top:.5rem"></div>
+        <div class="resend-row">
+          Não chegou?
+          <button id="btn-resend" onclick="sendOTP(true)" disabled>
+            Reenviar (<span id="resend-cd">60</span>s)
+          </button>
+        </div>
+      </div>
+
+      <div id="email-status"></div>
+
+      <button class="btn btn-primary" id="btn-submit" onclick="submitForm()" disabled data-track="form-submit-final">
+        <span class="spinner" id="spinner"></span>
+        <span id="btn-text">Cadastrar-me</span>
+      </button>
+
+      <div class="back-link"><a href="#" onclick="goStep1(event)">← Voltar</a></div>
+    </div>
+
+  </div><!-- /card-body -->
+
+  <!-- JÁ CADASTRADO -->
+  <div id="registered-screen">
+    <div class="registered-circle">⭐</div>
+    <h2>Você já está na LaVisualMk!</h2>
+    <p>Sua conta já existe em nosso sistema de marketing.<br/>Vamos te levar de volta ao conteúdo.</p>
+    <p style="color:var(--muted);font-size:.82rem;margin-top:1rem">
+      Redirecionando em <span id="registered-counter">3</span> segundos…
+    </p>
+  </div>
+
+  <!-- SUCESSO -->
+  <div id="success-screen">
+    <div class="check-circle">✓</div>
+    <h2>Bem-vindo à<br><span>LaVisualMk</span>!</h2>
+    <p>Seus dados foram cadastrados com sucesso.<br/>Em breve entraremos em contato com estratégias e recursos exclusivos de marketing digital.</p>
+    <p id="redirect-msg" style="display:none;color:var(--muted);font-size:.82rem;margin-top:1rem">
+      Voltando ao conteúdo em <span id="redirect-counter">4</span> segundos…
+    </p>
+  </div>
+
+</div><!-- /card -->
+
+
+<!-- ══ CURSOR JS ══ -->
+<script>
+  const cursor = document.getElementById('cursor');
+  const ring   = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animCursor() {
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    rx += (mx - rx) * .14; ry += (my - ry) * .14;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animCursor);
+  }
+  animCursor();
+</script>
+
+<script>
+/* ══════════════════════════════════════════════════
+   🕐  TIMEZONE HELPERS (America/Sao_Paulo, UTC-3)
+══════════════════════════════════════════════════ */
+function nowBR() {
+  return new Date().toLocaleString('sv-SE', { timeZone: 'America/Sao_Paulo' }) + '-03:00';
+}
+
+/* ══════════════════════════════════════════════════
+   ⚙️  CONFIGURACIÓN
+   supabase.com → tu proyecto → Settings → API
+══════════════════════════════════════════════════ */
+const SUPABASE_URL  = 'https://redaqqxoeciycqgjhpbv.supabase.co';
+const SUPABASE_ANON = 'sb_publishable_XYeljNeSm2awnovoTvzXiQ_va4cFyvU';
+
+const params = new URLSearchParams(window.location.search);
+const REDIRECT_AFTER_SUBMIT = params.get('redirect') || 'https://lavisualmk.alastecno.com/';
+const REDIRECT_DELAY = 4;
+
+/* ══════════════════════════════════════════════════
+   📊 RASTREO DE LEADS ABANDONADOS
+══════════════════════════════════════════════════ */
+const ABANDONED_KEY = 'lvm_lead_id'; // sessionStorage key para el ID del lead
+
+// Captura UTMs de la URL actual
+function getUTMs() {
+  const p = new URLSearchParams(window.location.search);
+  return {
+    utm_source:   p.get('utm_source')   || null,
+    utm_medium:   p.get('utm_medium')   || null,
+    utm_campaign: p.get('utm_campaign') || null,
+    utm_content:  p.get('utm_content')  || null,
+    utm_term:     p.get('utm_term')     || null,
+  };
+}
+
+// IP cacheada (reusa la del tracker de clicks si ya se buscó)
+let _leadIp = null;
+async function getLeadIp() {
+  if (_leadIp) return _leadIp;
+  try {
+    const r = await fetch('https://api.ipify.org?format=json');
+    _leadIp = (await r.json()).ip;
+  } catch(_) { _leadIp = 'unknown'; }
+  return _leadIp;
+}
+
+// Crea o actualiza el registro de lead abandonado
+async function upsertAbandonedLead(fields) {
+  try {
+    const existingId = sessionStorage.getItem(ABANDONED_KEY);
+    const ip = await getLeadIp();
+    const utms = getUTMs();
+
+    const payload = {
+      ...fields,
+      ...utms,
+      ip,
+      user_agent:       navigator.userAgent,
+      referrer:         document.referrer || null,
+      ultimo_evento_at: nowBR(),
+      convertido:       false,
+    };
+
+    if (existingId) {
+      // Actualizar registro existente (vía RPC: solo toca esa fila puntual)
+      const { error } = await sb.rpc('update_abandoned_lead', {
+        p_id:           existingId,
+        p_nombre:       fields.nombre   ?? null,
+        p_telefono:     fields.telefono ?? null,
+        p_paso_maximo:  fields.paso_maximo ?? null,
+        p_utm_source:   utms.utm_source,
+        p_utm_medium:   utms.utm_medium,
+        p_utm_campaign: utms.utm_campaign,
+        p_utm_content:  utms.utm_content,
+        p_utm_term:     utms.utm_term,
+        p_ip:           ip,
+        p_user_agent:   navigator.userAgent,
+        p_referrer:     document.referrer || null,
+      });
+      if (error) console.warn('[Lead tracking] update error:', error.message);
+    } else {
+      // Insertar nuevo registro
+      const { data, error } = await sb
+        .from('leads_abandonados')
+        .insert([{ ...payload, created_at: nowBR() }])
+        .select('id')
+        .single();
+      if (error) console.warn('[Lead tracking] insert error:', error.message);
+      if (data?.id) sessionStorage.setItem(ABANDONED_KEY, data.id);
+    }
+  } catch(e) {
+    console.warn('[Lead tracking] exception:', e.message);
+  }
+}
+
+// Marca el lead como convertido (llamado al completar el registro)
+async function markLeadConverted(email) {
+  try {
+    const existingId = sessionStorage.getItem(ABANDONED_KEY);
+    if (!existingId) return;
+    await sb.rpc('mark_lead_converted', { p_id: existingId });
+    sessionStorage.removeItem(ABANDONED_KEY);
+  } catch(e) {
+    console.warn('[Lead tracking] markConverted error:', e.message);
+  }
+}
+
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
+
+/* ══════════════════════════════════════════════════
+   ONESIGNAL
+══════════════════════════════════════════════════ */
+const ONESIGNAL_APP_ID = '37d3501c-826e-4c0f-ad3c-cd593440dc94';
+
+window.OneSignalDeferred = window.OneSignalDeferred || [];
+OneSignalDeferred.push(async function(OneSignal) {
+  await OneSignal.init({
+    appId: ONESIGNAL_APP_ID,
+    autoResubscribe: true,
+    promptOptions: { autoPrompt: false },
+  });
+});
+
+async function pedirPermisoPush(emailCliente) {
+  try {
+    await Promise.race([
+      _pedirPermisoPushInterno(emailCliente),
+      new Promise(r => setTimeout(r, 60000)),
+    ]);
+  } catch(e) { console.warn('OneSignal:', e); }
+}
+
+async function _pedirPermisoPushInterno(emailCliente) {
+  if (!emailCliente || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(emailCliente)) return;
+
+  let OS = null;
+  for (let i = 0; i < 20; i++) {
+    await new Promise(r => setTimeout(r, 500));
+    try {
+      if (window.OneSignal && typeof window.OneSignal.login === 'function') {
+        OS = window.OneSignal; break;
+      }
+    } catch(e) {}
+  }
+  if (!OS) return;
+
+  try {
+    await Promise.race([
+      OS.login(emailCliente),
+      new Promise(r => setTimeout(r, 12000)),
+    ]);
+  } catch(e) {}
+
+  let notifPermission = 'denied';
+  try { notifPermission = Notification.permission; } catch(e) {}
+
+  if (notifPermission === 'default') {
+    try {
+      await Promise.race([
+        OS.Notifications.requestPermission(),
+        new Promise(r => setTimeout(r, 45000)),
+      ]);
+    } catch(e) {}
+    await new Promise(r => setTimeout(r, 4000));
+  } else if (notifPermission === 'granted') {
+    try {
+      if (!OS.User.PushSubscription.optedIn) {
+        await Promise.race([
+          OS.User.PushSubscription.optIn(),
+          new Promise(r => setTimeout(r, 8000)),
+        ]);
+        await new Promise(r => setTimeout(r, 2000));
+      }
+    } catch(e) {}
+  }
+
+  let onesignalUserId = null;
+  for (let intento = 0; intento < 10; intento++) {
+    await new Promise(r => setTimeout(r, 1500));
+    try { onesignalUserId = OS.User.onesignalId || null; } catch(e) {}
+    if (onesignalUserId) break;
+  }
+  if (!onesignalUserId) return;
+
+  const { error: updateError } = await sb.rpc('set_onesignal_id', {
+    p_email: emailCliente,
+    p_onesignal_id: onesignalUserId,
+  });
+
+  if (updateError) console.error('[OneSignal] ERROR Supabase:', updateError.message);
+}
+
+let emailVerified    = false;
+let verifiedEmail    = '';
+let emailFromScreen0 = '';
+let timerCountdown   = null;
+let timerResend      = null;
+
+const $   = id => document.getElementById(id);
+const val = id => $(id).value.trim();
+
+/* ══════════════════════════════════════════════════
+   INICIO — detectar magic link
+══════════════════════════════════════════════════ */
+window.addEventListener('DOMContentLoaded', async () => {
+  const savedEmail = localStorage.getItem('lavisualmk_email');
+  if (savedEmail) {
+    $('email-check').value = savedEmail;
+    $('remember-me').checked = true;
+    // NUEVO: vincular suscripción push al email guardado
+    vincularEmailConPush(savedEmail);
+  }
+
+  const { data: { session } } = await sb.auth.getSession();
+  hideLoader();
+
+  if (session?.user?.email) {
+    const hasTokenInUrl = window.location.hash.includes('access_token');
+    if (hasTokenInUrl) {
+      handleMagicLinkSession(session.user.email);
+    } else {
+      await sb.auth.signOut();
+    }
+    return;
+  }
+
+  sb.auth.onAuthStateChange((event, session) => {
+    if ((event === 'SIGNED_IN' || event === 'USER_UPDATED') && session?.user?.email) {
+      if (!emailVerified) handleMagicLinkSession(session.user.email);
+    }
+  });
+});
+
+function hideLoader() {
+  const overlay = $('loading-overlay');
+  overlay.classList.add('hide');
+  setTimeout(() => overlay.style.display = 'none', 350);
+}
+
+/**
+ * Función auxiliar: vincula el email con la suscripción push actual.
+ * No muestra ningún prompt al usuario.
+ */
+
+async function vincularEmailConPush(email) {
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return;
+  try {
+    let OS = null;
+    for (let i = 0; i < 20; i++) {
+      await new Promise(r => setTimeout(r, 300));
+      if (window.OneSignal && typeof window.OneSignal.login === 'function') {
+        OS = window.OneSignal;
+        break;
+      }
+    }
+    if (!OS) return;
+
+    // Solo vinculamos si el usuario ya aceptó notificaciones push.
+    // Esto evita cualquier posibilidad de disparar el prompt antes de tiempo.
+    const optedIn = OS.User?.PushSubscription?.optedIn;
+    if (optedIn) {
+      await OS.login(email);
+    }
+  } catch(e) {
+    console.warn('vincularEmailConPush error:', e.message);
+  }
+}
+/* ══════════════════════════════════════════════════
+   PANTALLA 0 — checkEmail
+══════════════════════════════════════════════════ */
+async function checkEmail() {
+  const email = val('email-check');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+    setErr('email-check','err-email-check','Ingresá un email válido.');
+    return;
+  }
+  clearErr('email-check','err-email-check');
+
+  const btn = $('btn-check');
+  btn.disabled = true;
+  $('spinner-check').classList.add('show');
+  $('btn-check-text').textContent = 'Verificando…';
+
+  const { data: existe, error } = await sb.rpc('email_existe', { p_email: email });
+
+  $('spinner-check').classList.remove('show');
+  btn.disabled = false;
+  $('btn-check-text').textContent = 'Continuar →';
+
+  if (error) {
+    setErr('email-check','err-email-check','Error al verificar. Intentá de nuevo.');
+    return;
+  }
+
+  emailFromScreen0 = email;
+
+  if ($('remember-me').checked) {
+    localStorage.setItem('lavisualmk_email', email);
+  } else {
+    localStorage.removeItem('lavisualmk_email');
+  }
+
+  if (existe) {
+    showAlreadyRegistered(email);
+  } else {
+    // 📊 Registrar lead al avanzar desde la pantalla de email
+    upsertAbandonedLead({ email, paso_maximo: 'email' });
+    goToRegistration();
+  }
+}
+
+function goToRegistration() {
+  $('screen-email').classList.remove('active');
+  $('steps-bar').style.display = 'block';
+  $('step1').classList.add('active');
+  $('email').value = emailFromScreen0;
+}
+
+function goScreenEmail(e) {
+  if (e) e.preventDefault();
+  $('step1').classList.remove('active');
+  $('step2').classList.remove('active');
+  $('steps-bar').style.display = 'none';
+  $('screen-email').classList.add('active');
+  emailVerified = false;
+  verifiedEmail = '';
+  $('verify-box').classList.remove('show');
+  $('email-status').innerHTML = '';
+  stopCountdown();
+}
+
+/* ══════════════════════════════════════════════════
+   PANTALLAS DE RESULTADO
+══════════════════════════════════════════════════ */
+async function showAlreadyRegistered(email) {
+  $('form-area').style.display = 'none';
+  const screen = $('registered-screen');
+  screen.querySelector('p').innerHTML =
+    `El email <strong style="color:var(--gold)">${email}</strong> ya está en nuestra base de datos.<br/>Te llevamos de vuelta al contenido.`;
+  screen.classList.add('show');
+
+  // Vincular en silencio la suscripción push actual al email, sin pedir permiso
+  vincularEmailConPush(email);
+
+  let seg = 3;
+  const counter = $('registered-counter');
+  const timer = setInterval(() => {
+    seg--;
+    counter.textContent = seg;
+    if (seg <= 0) {
+      clearInterval(timer);
+      window.location.href = REDIRECT_AFTER_SUBMIT;
+    }
+  }, 1000);
+}
+/* ══════════════════════════════════════════════════
+   MAGIC LINK
+══════════════════════════════════════════════════ */
+function handleMagicLinkSession(email) {
+  emailVerified = true;
+  verifiedEmail = email;
+  emailFromScreen0 = email;
+  restoreFormState();
+  $('screen-email').classList.remove('active');
+  $('steps-bar').style.display = 'block';
+  activateStep2();
+  $('email').value = email;
+  $('email').classList.add('has-ok');
+  $('btn-send').style.display = 'none';
+  $('magic-email').textContent = email;
+  $('magic-banner').classList.add('show');
+  $('verify-box').style.display = 'none';
+  setEmailStatus('ok', '✅ Email verificado por link');
+  $('btn-submit').disabled = false;
+
+  // 📊 Actualizar lead: verificó por magic link
+  upsertAbandonedLead({ email, paso_maximo: 'step2' });
+}
+
+/* ══════════════════════════════════════════════════
+   UI HELPERS
+══════════════════════════════════════════════════ */
+function setErr(inputId, errId, msg) {
+  $(inputId).classList.add('has-err');
+  if (msg) $(errId).textContent = msg;
+  $(errId).classList.add('show');
+}
+function clearErr(inputId, errId) {
+  $(inputId).classList.remove('has-err');
+  $(errId).classList.remove('show');
+}
+function clearConsentErr(blockId, errId) {
+  $(blockId).classList.remove('has-err');
+  $(errId).classList.remove('show');
+}
+function setEmailStatus(type, msg) {
+  $('email-status').innerHTML = type
+    ? `<div class="badge badge-${type === 'ok' ? 'ok' : 'warn'}">${msg}</div>`
+    : '';
+}
+function isValidEmail(e) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e);
+}
+
+/* ══════════════════════════════════════════════════
+   PERSISTENCIA DEL FORMULARIO (magic link)
+══════════════════════════════════════════════════ */
+const FORM_KEY = 'lvm_formdata';
+
+function saveFormState() {
+  try {
+    sessionStorage.setItem(FORM_KEY, JSON.stringify({
+      nombre:         val('nombre'),
+      prefix:         val('phone-prefix'),
+      telefono:       $('telefono').value,
+      consent_datos:  $('consent-datos').checked,
+      consent_imagen: $('consent-imagen').checked,
+    }));
+  } catch(e) {}
+}
+
+function restoreFormState() {
+  try {
+    const raw = sessionStorage.getItem(FORM_KEY);
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    if (d.nombre)   $('nombre').value = d.nombre;
+    if (d.prefix)   $('phone-prefix').value = d.prefix;
+    if (d.telefono) $('telefono').value = d.telefono;
+    $('consent-datos').checked  = d.consent_datos  === true;
+    $('consent-imagen').checked = d.consent_imagen === true;
+  } catch(e) {}
+}
+
+function clearFormState() {
+  try { sessionStorage.removeItem(FORM_KEY); } catch(e) {}
+}
+
+/* ══════════════════════════════════════════════════
+   VALIDACIÓN PASO 1
+══════════════════════════════════════════════════ */
+function validateStep1() {
+  let ok = true;
+  const nombre = val('nombre');
+  if (nombre.split(' ').filter(p => p.length > 1).length < 2) {
+    setErr('nombre','err-nombre','Ingresá tu nombre y apellido completos.');
+    ok = false;
+  } else clearErr('nombre','err-nombre');
+
+  const digits = $('telefono').value.replace(/\D/g,'');
+  const prefix = val('phone-prefix').replace('+','');
+  if (digits.length < 6 || digits.length > 12 || (prefix + digits).length > 15) {
+    setErr('telefono','err-telefono'); ok = false;
+  } else clearErr('telefono','err-telefono');
+
+  if (!$('consent-datos').checked) {
+    $('block-datos').classList.add('has-err');
+    $('err-datos').classList.add('show');
+    ok = false;
+  } else {
+    $('block-datos').classList.remove('has-err');
+    $('err-datos').classList.remove('show');
+  }
+
+  return ok;
+}
+
+/* ══════════════════════════════════════════════════
+   NAVEGACIÓN
+══════════════════════════════════════════════════ */
+function activateStep2() {
+  $('step1').classList.remove('active');
+  $('step2').classList.add('active');
+  $('dot1').classList.replace('active','done');
+  $('dot1').textContent = '✓';
+  $('dot2').classList.add('active');
+  $('line1').classList.add('done');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goStep2() {
+  if (!validateStep1()) return;
+  saveFormState();
+
+  // 📊 Actualizar lead con datos de paso 1
+  const digits = $('telefono').value.replace(/\D/g,'');
+  const prefix = val('phone-prefix');
+  upsertAbandonedLead({
+    email:          emailFromScreen0,
+    nombre:         val('nombre'),
+    telefono:       prefix + digits,
+    consent_datos:  $('consent-datos').checked,
+    consent_imagen: $('consent-imagen').checked,
+    paso_maximo:    'step1',
+  });
+
+  activateStep2();
+}
+
+function goStep1(e) {
+  if (e) e.preventDefault();
+  $('step2').classList.remove('active');
+  $('step1').classList.add('active');
+  $('dot1').classList.replace('done','active');
+  $('dot1').textContent = '1';
+  $('dot2').classList.remove('active');
+  $('line1').classList.remove('done');
+}
+
+/* ══════════════════════════════════════════════════
+   ENVIAR OTP
+══════════════════════════════════════════════════ */
+async function sendOTP(isResend = false) {
+  const email = emailFromScreen0;
+  if (!isValidEmail(email)) return;
+  clearErr('email','err-email');
+
+  const btn = $('btn-send');
+  btn.disabled = true;
+  btn.textContent = 'Enviando…';
+
+  const { error } = await sb.auth.signInWithOtp({
+    email,
+    options: { shouldCreateUser: true }
+  });
+
+  if (error) {
+    btn.disabled = false;
+    btn.textContent = isResend ? 'Reenviar' : 'Enviar código';
+    setErr('email','err-email','No se pudo enviar: ' + error.message);
+    return;
+  }
+
+  btn.textContent = 'Reenviar';
+  btn.disabled = false;
+  $('email-sent-to').textContent = email;
+  $('verify-box').classList.add('show');
+  $('email').classList.add('has-ok');
+  setEmailStatus('warn','⏳ Pendiente de verificación');
+  startCountdown(10 * 60);
+  startResendCooldown(60);
+  saveFormState();
+
+  // 📊 Actualizar lead: llegó al paso de verificación de email
+  upsertAbandonedLead({ email, paso_maximo: 'step2' });
+}
+
+/* ══════════════════════════════════════════════════
+   VERIFICAR OTP MANUAL
+══════════════════════════════════════════════════ */
+async function verifyOTP() {
+  const email = emailFromScreen0;
+  const token = val('code-input');
+  const errEl = $('err-code');
+
+  if (token.length !== 6) {
+    errEl.textContent = 'El código debe tener 6 dígitos.';
+    errEl.classList.add('show');
+    return;
+  }
+
+  const confirmBtn = $('verify-box').querySelector('.code-row .btn-outline');
+  confirmBtn.disabled = true;
+  confirmBtn.textContent = 'Verificando…';
+
+  const { error } = await sb.auth.verifyOtp({ email, token, type: 'email' });
+
+  confirmBtn.disabled = false;
+  confirmBtn.textContent = 'Confirmar';
+
+  if (error) {
+    errEl.textContent = 'Código incorrecto o expirado. Intentá de nuevo.';
+    errEl.classList.add('show');
+    $('code-input').classList.add('has-err');
+    return;
+  }
+
+  emailVerified = true;
+  verifiedEmail = email;
+  stopCountdown();
+  $('verify-box').style.display = 'none';
+  $('email').classList.add('has-ok');
+  setEmailStatus('ok','✅ Email verificado');
+  $('btn-submit').disabled = false;
+}
+
+/* ══════════════════════════════════════════════════
+   GUARDAR EN SUPABASE
+══════════════════════════════════════════════════ */
+async function submitForm() {
+  if (!emailVerified) return;
+
+  const btn = $('btn-submit');
+  btn.disabled = true;
+  $('spinner').classList.add('show');
+  $('btn-text').textContent = 'Guardando…';
+
+  const digits   = $('telefono').value.replace(/\D/g,'');
+  const prefix   = val('phone-prefix');
+  const telefono = prefix + digits;
+  const emailFinal = verifiedEmail || val('email');
+
+  let onesignalId = null;
+  try {
+    if (Notification.permission === 'granted' && window.OneSignal) {
+      await new Promise(r => setTimeout(r, 400));
+      onesignalId = window.OneSignal.User.onesignalId || null;
+    }
+  } catch(e) {}
+
+  const { error } = await sb.from('clientes').insert([{
+    nombre:           val('nombre'),
+    email:            emailFinal,
+    telefono:         telefono,
+    estado:           'Interesado',
+    descuento:        'BRANDING50',
+    consent_datos:    $('consent-datos').checked,
+    consent_imagen:   $('consent-imagen').checked,
+    onesignal_id:     onesignalId,
+    tema_interes: REDIRECT_AFTER_SUBMIT
+                    ? (() => { try {
+                        return new URL(REDIRECT_AFTER_SUBMIT).pathname
+                          .replace(/^\//, '').replace(/-/g,' ') || null;
+                      } catch(e) { return null; } })()
+                    : null,
+  }]);
+
+  $('spinner').classList.remove('show');
+
+  if (error) {
+    btn.disabled = false;
+    $('btn-text').textContent = 'Registrarme';
+    alert('Error al guardar: ' + error.message);
+    return;
+  }
+
+  $('form-area').style.display = 'none';
+  $('success-screen').classList.add('show');
+  clearFormState();
+
+  // 📊 Marcar lead como convertido
+  markLeadConverted(emailFinal);
+
+  await pedirPermisoPush(emailFinal);
+
+  $('redirect-msg').style.display = 'block';
+    let seg = REDIRECT_DELAY;
+    $('redirect-counter').textContent = seg;
+    const timer = setInterval(() => {
+      seg--;
+      $('redirect-counter').textContent = seg;
+      if (seg <= 0) {
+        clearInterval(timer);
+        window.location.href = REDIRECT_AFTER_SUBMIT;
+      }
+    }, 1000);
+}
+
+/* ══════════════════════════════════════════════════
+   TIMERS
+══════════════════════════════════════════════════ */
+function startCountdown(seconds) {
+  stopCountdown();
+  let s = seconds;
+  tick(s);
+  timerCountdown = setInterval(() => {
+    s--; tick(s);
+    if (s <= 0) {
+      stopCountdown();
+      $('countdown').textContent = 'expirado';
+      $('countdown').style.color = 'var(--err)';
+    }
+  }, 1000);
+}
+function tick(s) {
+  const m   = String(Math.floor(s/60)).padStart(2,'0');
+  const sec = String(s%60).padStart(2,'0');
+  $('countdown').textContent = `${m}:${sec}`;
+}
+function stopCountdown() {
+  if (timerCountdown) { clearInterval(timerCountdown); timerCountdown = null; }
+}
+function startResendCooldown(seconds) {
+  if (timerResend) clearInterval(timerResend);
+  const btn = $('btn-resend');
+  const cd  = $('resend-cd');
+  btn.disabled = true;
+  let s = seconds;
+  cd.textContent = s;
+  timerResend = setInterval(() => {
+    s--; cd.textContent = s;
+    if (s <= 0) {
+      clearInterval(timerResend);
+      btn.disabled = false;
+      btn.innerHTML = 'Reenviar código';
+    }
+  }, 1000);
+}
+function onEmailChange() {
+  if (emailVerified) {
+    emailVerified = false;
+    verifiedEmail = '';
+    $('btn-submit').disabled = true;
+    setEmailStatus('','');
+    $('verify-box').classList.remove('show');
+    $('email').classList.remove('has-ok');
+    stopCountdown();
+  }
+}
+function onCodeInput() {
+  $('code-input').classList.remove('has-err');
+  $('err-code').classList.remove('show');
+}
+</script>
+
+<!-- ══ MODAL: POLÍTICA DE PRIVACIDADE ══ -->
+<div class="modal-overlay" id="modal-privacidad" onclick="handleOverlayClick(event,'modal-privacidad')">
+  <div class="modal-box">
+    <div class="modal-handle"></div>
+    <div class="modal-head">
+      <span class="modal-title">🔒 Política de Privacidade</span>
+      <button class="modal-close" onclick="closeModal('modal-privacidad')" aria-label="Fechar">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:.76rem;color:var(--muted);margin-bottom:1.2rem">Última atualização: maio de 2025 · <em>LaVisualMk®</em></p>
+
+      <h2>1. Responsável pelo tratamento</h2>
+      <p><strong>LaVisualMk</strong> é responsável pelo tratamento dos dados pessoais coletados por meio de seus formulários e site. Contato: <strong>contacto@lavisualmk.com</strong></p>
+      <div class="law-line">Cumprimento: GDPR (UE/Espanha) · LGPD (Brasil) · Lei 25.326 (Argentina) · normativas locais aplicáveis.</div>
+
+      <h2>2. Dados que coletamos</h2>
+      <ul>
+        <li><strong>Identificação:</strong> nome e sobrenome.</li>
+        <li><strong>Contato:</strong> e-mail e telefone.</li>
+        <li><strong>Imagem:</strong> fotografias ou gravações, somente com autorização expressa.</li>
+      </ul>
+      <p>Não coletamos dados sensíveis como informações financeiras, de saúde ou crenças religiosas.</p>
+
+      <h2>3. Para que usamos seus dados</h2>
+      <ul>
+        <li>Gerenciar seu cadastro e acesso a conteúdos de marketing digital.</li>
+        <li>Enviar estratégias, recursos e novidades do setor.</li>
+        <li>Responder dúvidas sobre serviços de branding, redes e publicidade.</li>
+        <li>Enviar notificações push se você as autorizou.</li>
+      </ul>
+      <p><strong>Não vendemos nem compartilhamos seus dados com terceiros para fins comerciais.</strong></p>
+
+      <h2>4. Base legal</h2>
+      <p>O tratamento é realizado com base no seu <strong>consentimento expresso</strong> ao marcar a caixa correspondente. Você pode revogá-lo a qualquer momento.</p>
+
+      <h2>5. Compartilhamos seus dados?</h2>
+      <p>Somente com fornecedores tecnológicos de confiança (Supabase, OneSignal) sob contratos que garantem sua proteção, e quando exigido por autoridade competente.</p>
+
+      <h2>6. Período de conservação</h2>
+      <p>Conservamos seus dados enquanto você mantiver relação ativa com a LaVisualMk. Mediante solicitação de exclusão, os removemos em no máximo <strong>30 dias úteis</strong>.</p>
+
+      <h2>7. Seus direitos</h2>
+      <p>Você tem direito de acessar, retificar, excluir, opor-se, limitar ou portar seus dados. Para exercê-los, escreva para <strong>contacto@lavisualmk.com</strong> com o assunto <em>"Exercício de direitos — dados pessoais"</em>.</p>
+
+      <h2>8. Segurança</h2>
+      <p>Aplicamos criptografia HTTPS/TLS, armazenamento seguro, verificação de identidade por e-mail e acesso restrito ao pessoal autorizado.</p>
+
+      <h2>9. Menores de idade</h2>
+      <p>Nossos serviços são destinados a maiores de 18 anos. Se você souber que um menor nos enviou dados, entre em contato para excluí-los imediatamente.</p>
+    </div>
+    <div class="modal-footer">
+      <span class="modal-footer-note">Ao fechar, você pode marcar a caixa de aceitação.</span>
+      <button class="btn-modal-close" onclick="closeModal('modal-privacidad')">Entendido ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: TERMOS E CONDIÇÕES ══ -->
+<div class="modal-overlay" id="modal-terminos" onclick="handleOverlayClick(event,'modal-terminos')">
+  <div class="modal-box">
+    <div class="modal-handle"></div>
+    <div class="modal-head">
+      <span class="modal-title">📄 Termos e Condições</span>
+      <button class="modal-close" onclick="closeModal('modal-terminos')" aria-label="Fechar">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:.76rem;color:var(--muted);margin-bottom:1.2rem">Última atualização: maio de 2025 · <em>LaVisualMk®</em></p>
+
+      <h2>1. Aceitação</h2>
+      <p>Ao usar os serviços da <strong>LaVisualMk</strong> você aceita estes termos na íntegra. O uso continuado implica aceitação de futuras modificações.</p>
+
+      <h2>2. Descrição do serviço</h2>
+      <p>Agência de marketing digital voltada a branding, gestão de redes sociais, publicidade digital e estratégia de conteúdo. Inclui acesso a recursos exclusivos, cadastro como cliente ou lead, e recebimento de comunicações comerciais.</p>
+
+      <h2>3. Cadastro</h2>
+      <p>Ao se cadastrar, você declara que os dados são corretos, tem mais de 18 anos e não usará uma identidade falsa. Notifique qualquer uso não autorizado da sua conta.</p>
+
+      <h2>4. Uso aceitável</h2>
+      <p>É proibido publicar conteúdo ofensivo ou ilegal, enviar spam, acessar sistemas sem autorização, reproduzir nossos materiais sem permissão ou prejudicar a reputação da <em>LaVisualMk</em>.</p>
+
+      <h2>5. Propriedade intelectual</h2>
+      <p>Todo o conteúdo publicado — designs, estratégias, textos, recursos — é propriedade da <strong>LaVisualMk</strong>. É concedida licença limitada e pessoal para uso privado. É proibida sua reprodução ou uso comercial sem autorização por escrito.</p>
+
+      <h2>6. Autorização de imagem</h2>
+      <p>O uso de fotografias ou gravações requer autorização expressa, solicitada no formulário. É voluntária e revogável a qualquer momento escrevendo para <strong>contacto@lavisualmk.com</strong>.</p>
+
+      <h2>7. Comunicações</h2>
+      <p>Você pode cancelar qualquer comunicação pelo link de descadastro em cada e-mail, desativando notificações push ou nos escrevendo diretamente.</p>
+
+      <h2>8. Limitação de responsabilidade</h2>
+      <p>Os conteúdos têm caráter informativo e de assessoria em marketing digital. Não garantimos resultados específicos, pois dependem de múltiplos fatores externos. Não nos responsabilizamos por decisões tomadas exclusivamente com base em nosso conteúdo.</p>
+
+      <h2>9. Cancelamento</h2>
+      <p>Você pode solicitar o cancelamento e exclusão dos seus dados a qualquer momento para <strong>contacto@lavisualmk.com</strong>. Processamos a solicitação em até 30 dias úteis.</p>
+
+      <h2>10. Lei aplicável</h2>
+      <p>Para proteção do consumidor e privacidade, aplica-se a normativa do país de residência do usuário. Para demais matérias, a legislação da República Argentina.</p>
+    </div>
+    <div class="modal-footer">
+      <span class="modal-footer-note">Ao fechar, você pode marcar a caixa de aceitação.</span>
+      <button class="btn-modal-close" onclick="closeModal('modal-terminos')">Entendido ✓</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openModal(id) {
+    document.getElementById(id).classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function handleOverlayClick(e, id) {
+    if (e.target === document.getElementById(id)) closeModal(id);
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal-overlay.open')
+        .forEach(m => m.classList.remove('open'));
+      document.body.style.overflow = '';
+    }
+  });
+</script>
+
+  <!-- ── Tracking de clicks → Supabase ── -->
+  <script>
+  (function () {
+    const SUPA_URL = 'https://redaqqxoeciycqgjhpbv.supabase.co';
+    const SUPA_KEY = 'sb_publishable_XYeljNeSm2awnovoTvzXiQ_va4cFyvU';
+    const PAGE     = window.location.pathname || '/';
+    const UA       = navigator.userAgent;
+    let   cachedIp = null;
+
+    async function getIp() {
+      if (cachedIp) return cachedIp;
+      try { const r = await fetch('https://api.ipify.org?format=json'); cachedIp = (await r.json()).ip; }
+      catch (_) { cachedIp = 'unknown'; }
+      return cachedIp;
+    }
+
+    async function track(buttonId, el) {
+      const ip = await getIp();
+      try {
+        await fetch(SUPA_URL + '/rest/v1/click_events', {
+          method: 'POST',
+          headers: {
+            'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY,
+            'Content-Type': 'application/json', 'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({
+            button_id:   buttonId,
+            ip:          ip,
+            page:        PAGE,
+            user_agent:  UA,
+            button_text: (el.textContent || '').trim().slice(0, 80),
+            href:        el.href || el.getAttribute('href') || '',
+            referrer:    document.referrer || ''
+          })
+        });
+      } catch (_) {}
+    }
+
+    document.addEventListener('click', function (e) {
+      const el = e.target.closest('[data-track]');
+      if (el) track(el.getAttribute('data-track'), el);
+    });
+
+    getIp(); // pre-carga IP al cargar la página
+  })();
+  </script>
+
+</body>
+</html>

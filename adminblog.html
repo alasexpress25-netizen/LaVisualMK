@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Blog – Impacto TV Mídia</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold:  #C9A244;
+      --gold2: #e8c96a;
+      --black: #020202;
+      --dark:  #0a0a0a;
+      --dark2: #111111;
+      --dark3: #1a1a1a;
+      --white: #ffffff;
+      --red:   #e74c3c;
+      --green: #4caf7d;
+    }
+    body { font-family: 'Montserrat', sans-serif; background: var(--black); color: var(--white); min-height: 100vh; }
+
+    /* ── LOGIN SCREEN ── */
+    #login-screen {
+      position: fixed; inset: 0; z-index: 9999;
+      background: var(--black);
+      display: flex; align-items: center; justify-content: center;
+    }
+    #login-screen.hidden { display: none; }
+    .login-box {
+      width: 100%; max-width: 360px; padding: 0 1.5rem;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .login-logo {
+      font-family: 'Cinzel', serif; font-size: 1.2rem; font-weight: 700;
+      letter-spacing: .22em; color: var(--gold); text-transform: uppercase;
+      margin-bottom: .4rem;
+    }
+    .login-logo span { color: var(--white); }
+    .login-tag {
+      font-size: .58rem; letter-spacing: .35em; text-transform: uppercase;
+      color: rgba(255,255,255,.2); margin-bottom: 2.8rem;
+    }
+    .login-divider {
+      width: 100%; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201,162,68,.3), transparent);
+      margin-bottom: 2.5rem;
+    }
+    .login-field { width: 100%; margin-bottom: 1rem; }
+    .login-field label {
+      display: block; font-size: .58rem; font-weight: 600;
+      letter-spacing: .18em; text-transform: uppercase; color: var(--gold);
+      margin-bottom: .4rem;
+    }
+    .login-field input {
+      width: 100%; background: var(--dark);
+      border: 1px solid rgba(201,162,68,.18);
+      color: var(--white); font-family: 'Montserrat', sans-serif;
+      font-size: .9rem; padding: .85rem 1rem;
+      outline: none; transition: border-color .2s;
+    }
+    .login-field input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,162,68,.07); }
+    .login-btn {
+      width: 100%; margin-top: .5rem; padding: 1rem;
+      background: var(--gold); color: var(--black);
+      border: none; font-family: 'Montserrat', sans-serif;
+      font-size: .75rem; font-weight: 700; letter-spacing: .22em;
+      text-transform: uppercase; cursor: pointer;
+      transition: background .2s, transform .15s;
+    }
+    .login-btn:hover { background: var(--gold2); transform: translateY(-1px); }
+    .login-btn:active { transform: none; }
+    .login-error {
+      margin-top: .9rem; font-size: .72rem; letter-spacing: .06em;
+      color: var(--red); text-align: center; min-height: 1.1rem;
+      opacity: 0; transition: opacity .2s;
+    }
+    .login-error.show { opacity: 1; }
+
+    /* ── ADMIN CONTENT oculto até login ── */
+    #admin-content { display: none; }
+    #admin-content.visible { display: block; }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--dark2);
+      border-bottom: 1px solid rgba(201,162,68,.2);
+      padding: 1.2rem 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .logo { font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 700; letter-spacing: .18em; color: var(--gold); text-transform: uppercase; }
+    .logo span { color: var(--white); }
+    .header-tag { font-size: .62rem; letter-spacing: .3em; text-transform: uppercase; color: rgba(255,255,255,.3); }
+
+    /* ── LAYOUT ── */
+    .admin-wrap { display: grid; grid-template-columns: 1fr 380px; gap: 0; min-height: calc(100vh - 61px); }
+
+    /* ── PANEL IZQUIERDO (lista) ── */
+    .panel-list { border-right: 1px solid rgba(201,162,68,.1); padding: 2rem; overflow-y: auto; }
+    .panel-title {
+      font-family: 'Cinzel', serif; font-size: .8rem; font-weight: 600;
+      letter-spacing: .2em; text-transform: uppercase; color: var(--gold);
+      margin-bottom: 1.5rem; padding-bottom: .8rem;
+      border-bottom: 1px solid rgba(201,162,68,.12);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .post-count { font-family: 'Montserrat', sans-serif; font-size: .65rem; color: rgba(255,255,255,.3); font-weight: 400; letter-spacing: .1em; }
+
+    .post-item {
+      background: rgba(201,162,68,.03);
+      border: 1px solid rgba(201,162,68,.1);
+      padding: 1rem 1.2rem;
+      margin-bottom: .8rem;
+      display: flex; align-items: center; gap: 1rem;
+      transition: border-color .2s, background .2s;
+      cursor: pointer;
+    }
+    .post-item:hover { border-color: rgba(201,162,68,.3); background: rgba(201,162,68,.06); }
+    .post-item.editing { border-color: var(--gold); background: rgba(201,162,68,.08); }
+    .post-emoji { font-size: 1.5rem; flex-shrink: 0; }
+    .post-info { flex: 1; min-width: 0; }
+    .post-title-list {
+      font-family: 'Cinzel', serif; font-size: .82rem; font-weight: 600;
+      color: var(--white); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      margin-bottom: .25rem;
+    }
+    .post-meta-list { font-size: .62rem; color: rgba(255,255,255,.3); letter-spacing: .08em; }
+    .post-actions { display: flex; gap: .5rem; flex-shrink: 0; }
+    .btn-icon {
+      width: 30px; height: 30px; border: 1px solid rgba(201,162,68,.2);
+      background: transparent; color: rgba(255,255,255,.4);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: .75rem; transition: all .2s;
+    }
+    .btn-icon:hover { border-color: var(--red); color: var(--red); }
+    .btn-icon.edit:hover { border-color: var(--gold); color: var(--gold); }
+    .status-dot {
+      width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+      background: var(--green);
+    }
+    .status-dot.off { background: rgba(255,255,255,.2); }
+
+    .empty-state {
+      text-align: center; padding: 3rem 1rem;
+      color: rgba(255,255,255,.2); font-size: .8rem; letter-spacing: .08em;
+    }
+    .empty-state .big { font-size: 2rem; margin-bottom: 1rem; }
+
+    /* ── PANEL DERECHO (formulario) ── */
+    .panel-form { padding: 2rem; overflow-y: auto; max-height: calc(100vh - 61px); }
+    .form-title {
+      font-family: 'Cinzel', serif; font-size: .8rem; font-weight: 600;
+      letter-spacing: .2em; text-transform: uppercase; color: var(--gold);
+      margin-bottom: 1.5rem; padding-bottom: .8rem;
+      border-bottom: 1px solid rgba(201,162,68,.12);
+    }
+
+    .field { margin-bottom: 1rem; }
+    .field label {
+      display: block; font-size: .62rem; font-weight: 600;
+      letter-spacing: .14em; text-transform: uppercase; color: var(--gold);
+      margin-bottom: .4rem;
+    }
+    .field input, .field select, .field textarea {
+      width: 100%; background: var(--dark);
+      border: 1px solid rgba(201,162,68,.18);
+      color: var(--white); font-family: 'Montserrat', sans-serif;
+      font-size: .85rem; padding: .75rem 1rem;
+      outline: none; transition: border-color .2s;
+      border-radius: 0; -webkit-appearance: none;
+    }
+    .field input::placeholder, .field textarea::placeholder { color: rgba(255,255,255,.2); }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,162,68,.07);
+    }
+    .field select option { background: var(--dark2); }
+    .field textarea { resize: vertical; min-height: 80px; }
+    .field textarea.content-area { min-height: 200px; font-size: .8rem; line-height: 1.6; }
+
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+
+    .toggle-wrap { display: flex; align-items: center; gap: .8rem; margin-bottom: 1rem; }
+    .toggle-label { font-size: .62rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
+    .toggle {
+      position: relative; width: 40px; height: 22px;
+    }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute; inset: 0; cursor: pointer;
+      background: rgba(255,255,255,.1); transition: .3s;
+      border: 1px solid rgba(201,162,68,.2);
+    }
+    .toggle-slider::before {
+      content: ''; position: absolute;
+      width: 14px; height: 14px; left: 3px; top: 3px;
+      background: rgba(255,255,255,.4); transition: .3s;
+    }
+    .toggle input:checked + .toggle-slider { background: rgba(201,162,68,.2); border-color: var(--gold); }
+    .toggle input:checked + .toggle-slider::before { transform: translateX(18px); background: var(--gold); }
+
+    .slug-preview {
+      font-size: .65rem; color: rgba(255,255,255,.25); margin-top: .3rem;
+      letter-spacing: .05em; word-break: break-all;
+    }
+    .slug-preview span { color: var(--gold); }
+
+    .btn-save {
+      width: 100%; padding: .95rem;
+      background: var(--gold); color: var(--black);
+      border: none; font-family: 'Montserrat', sans-serif;
+      font-size: .75rem; font-weight: 700; letter-spacing: .2em;
+      text-transform: uppercase; cursor: pointer;
+      transition: background .2s, transform .2s;
+      margin-top: .5rem;
+    }
+    .btn-save:hover { background: var(--gold2); transform: translateY(-1px); }
+    .btn-save:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+    .btn-new {
+      width: 100%; padding: .7rem;
+      background: transparent; color: rgba(255,255,255,.4);
+      border: 1px solid rgba(255,255,255,.1);
+      font-family: 'Montserrat', sans-serif;
+      font-size: .7rem; font-weight: 600; letter-spacing: .15em;
+      text-transform: uppercase; cursor: pointer;
+      transition: all .2s; margin-top: .6rem;
+    }
+    .btn-new:hover { border-color: var(--gold); color: var(--gold); }
+
+    .alert {
+      padding: .75rem 1rem; font-size: .78rem; margin-top: .8rem;
+      display: none; letter-spacing: .04em;
+    }
+    .alert.show { display: block; }
+    .alert.ok { background: rgba(76,175,125,.1); border: 1px solid rgba(76,175,125,.3); color: var(--green); }
+    .alert.err { background: rgba(231,76,60,.1); border: 1px solid rgba(231,76,60,.3); color: var(--red); }
+
+    .hint { font-size: .65rem; color: rgba(255,255,255,.22); margin-top: .3rem; line-height: 1.5; }
+
+    /* ── IMAGE UPLOAD ── */
+    .img-upload-area {
+      border: 1.5px dashed rgba(201,162,68,.25); background: var(--dark);
+      padding: 1.5rem; text-align: center; cursor: pointer;
+      transition: border-color .2s, background .2s; position: relative;
+    }
+    .img-upload-area:hover { border-color: var(--gold); background: rgba(201,162,68,.04); }
+    .img-upload-area.drag-over { border-color: var(--gold); background: rgba(201,162,68,.08); }
+    .img-upload-area input[type="file"] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+    .img-upload-icon { font-size: 1.8rem; margin-bottom: .5rem; opacity: .4; }
+    .img-upload-text { font-size: .68rem; color: rgba(255,255,255,.3); letter-spacing: .06em; }
+    .img-upload-text strong { color: var(--gold); }
+    .img-preview-wrap { position: relative; margin-top: .8rem; display: none; }
+    .img-preview-wrap.show { display: block; }
+    .img-preview { width: 100%; aspect-ratio: 16/10; object-fit: cover; border: 1px solid rgba(201,162,68,.2); display: block; }
+    .img-preview-remove {
+      position: absolute; top: .4rem; right: .4rem;
+      background: rgba(231,76,60,.85); color: #fff; border: none;
+      width: 24px; height: 24px; font-size: .8rem; cursor: pointer;
+      transition: background .2s; line-height: 1;
+    }
+    .img-preview-remove:hover { background: var(--red); }
+    .img-uploading { font-size: .68rem; color: var(--gold); letter-spacing: .08em; margin-top: .5rem; display: none; text-align: center; }
+    .img-uploading.show { display: block; }
+    .img-progress { height: 2px; background: rgba(201,162,68,.15); margin-top: .4rem; overflow: hidden; display: none; }
+    .img-progress.show { display: block; }
+    .img-progress-bar { height: 100%; background: var(--gold); width: 0%; transition: width .4s; }
+
+    /* modal confirm */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(2,2,2,.85);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 200; opacity: 0; pointer-events: none; transition: opacity .25s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal-box {
+      background: var(--dark2); border: 1px solid rgba(201,162,68,.2);
+      padding: 2rem; max-width: 360px; width: 90%; text-align: center;
+    }
+    .modal-title { font-family: 'Cinzel', serif; font-size: 1rem; color: var(--white); margin-bottom: .8rem; }
+    .modal-text { font-size: .8rem; color: rgba(255,255,255,.45); line-height: 1.7; margin-bottom: 1.5rem; }
+    .modal-btns { display: flex; gap: .8rem; }
+    .modal-btns button {
+      flex: 1; padding: .7rem; font-family: 'Montserrat', sans-serif;
+      font-size: .72rem; font-weight: 700; letter-spacing: .15em;
+      text-transform: uppercase; cursor: pointer; border: none; transition: .2s;
+    }
+    .btn-cancel { background: rgba(255,255,255,.06); color: rgba(255,255,255,.5); }
+    .btn-cancel:hover { background: rgba(255,255,255,.1); }
+    .btn-confirm { background: var(--red); color: var(--white); }
+    .btn-confirm:hover { background: #c0392b; }
+
+    @media(max-width: 900px) {
+      .admin-wrap { grid-template-columns: 1fr; }
+      .panel-list { border-right: none; border-bottom: 1px solid rgba(201,162,68,.1); max-height: 40vh; }
+      .panel-form { max-height: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── LOGIN SCREEN ── -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">Impacto<span>TV</span></div>
+    <div class="login-tag">Painel Administrativo</div>
+    <div class="login-divider"></div>
+    <div class="login-field">
+      <label>Email</label>
+      <input type="email" id="l-user" placeholder="admin@impactotv.com" autocomplete="username"/>
+    </div>
+    <div class="login-field">
+      <label>Senha</label>
+      <input type="password" id="l-pass" placeholder="••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter') doLogin()"/>
+    </div>
+    <button class="login-btn" onclick="doLogin()">Entrar</button>
+    <div class="login-error" id="login-error">Email ou senha incorretos.</div>
+  </div>
+</div>
+
+<!-- ── ADMIN CONTENT ── -->
+<div id="admin-content">
+
+<header>
+  <div class="logo">Impacto<span>TV</span> Mídia</div>
+    <div style="display:flex;align-items:center;gap:1.5rem;">
+    <a href="index.html" style="font-family:'Montserrat',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;background:transparent;border:1px solid rgba(201,162,68,.2);color:rgba(255,255,255,.3);padding:.4rem .9rem;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:.35rem;" onmouseover="this.style.borderColor='rgba(201,162,68,.5)';this.style.color='rgba(201,162,68,.8)'" onmouseout="this.style.borderColor='rgba(201,162,68,.2)';this.style.color='rgba(255,255,255,.3)'">👥 CRM</a>
+    <div class="header-tag">⬡ Painel de Blog</div>
+    <button onclick="logout()" style="font-family:'Montserrat',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;background:transparent;border:1px solid rgba(201,162,68,.2);color:rgba(255,255,255,.3);padding:.4rem .9rem;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='rgba(201,162,68,.5)';this.style.color='rgba(201,162,68,.8)'" onmouseout="this.style.borderColor='rgba(201,162,68,.2)';this.style.color='rgba(255,255,255,.3)'">Sair ↩</button>
+  </div>
+</header>
+
+<div class="admin-wrap">
+
+  <!-- ── LISTA DE POSTS ── -->
+  <div class="panel-list">
+    <div class="panel-title">
+      Artigos Publicados
+      <span class="post-count" id="post-count">carregando…</span>
+    </div>
+    <div id="post-list">
+      <div class="empty-state"><div class="big">📄</div>Carregando artigos…</div>
+    </div>
+  </div>
+
+  <!-- ── FORMULARIO ── -->
+  <div class="panel-form">
+    <div class="form-title" id="form-title">Novo Artigo</div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Emoji / Ícone</label>
+        <input type="text" id="f-emoji" placeholder="🤖" maxlength="4"/>
+      </div>
+      <div class="field">
+        <label>Categoria</label>
+        <select id="f-categoria">
+          <option value="Tendências">Tendências</option>
+          <option value="Tecnologia">Tecnologia</option>
+          <option value="Case Local">Case Local</option>
+          <option value="Estratégia">Estratégia</option>
+          <option value="Mercado">Mercado</option>
+          <option value="Dicas">Dicas</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Título do Artigo *</label>
+      <input type="text" id="f-titulo" placeholder="Como a IA está redefinindo o DOOH…"/>
+      <div class="slug-preview">URL: blog-articulo.html?slug=<span id="slug-preview">…</span></div>
+    </div>
+
+    <div class="field">
+      <label>Data de Publicação</label>
+      <input type="date" id="f-fecha"/>
+    </div>
+
+    <div class="field">
+      <label>Imagem de Capa</label>
+      <div class="img-upload-area" id="img-upload-area"
+           ondragover="event.preventDefault();this.classList.add('drag-over')"
+           ondragleave="this.classList.remove('drag-over')"
+           ondrop="handleDrop(event)">
+        <input type="file" id="f-imagem" accept="image/jpeg,image/png,image/webp" onchange="handleFileSelect(this)"/>
+        <div class="img-upload-icon">🖼️</div>
+        <div class="img-upload-text">Arraste uma imagem ou <strong>clique para selecionar</strong><br>JPG, PNG ou WEBP · Recomendado: 1200×750px</div>
+      </div>
+      <div class="img-preview-wrap" id="img-preview-wrap">
+        <img class="img-preview" id="img-preview" src="" alt="Preview"/>
+        <button class="img-preview-remove" onclick="removeImage()" title="Remover imagem">✕</button>
+      </div>
+      <div class="img-uploading" id="img-uploading">⬆ Enviando imagem…</div>
+      <div class="img-progress" id="img-progress"><div class="img-progress-bar" id="img-progress-bar"></div></div>
+      <input type="hidden" id="f-imagen-url"/>
+    </div>
+
+    <div class="field">
+      <label>Resumo (aparece na listagem) *</label>
+      <textarea id="f-resumen" placeholder="Breve descrição do artigo para aparecer nos cards do site…"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Conteúdo Completo *</label>
+      <textarea id="f-contenido" class="content-area" placeholder="Escreva o conteúdo completo do artigo aqui. Pode usar HTML básico: &lt;h2&gt;, &lt;p&gt;, &lt;strong&gt;, &lt;ul&gt;, &lt;li&gt;…"></textarea>
+      <div class="hint">Dica: use &lt;h2&gt;Subtítulo&lt;/h2&gt;, &lt;p&gt;Parágrafo&lt;/p&gt;, &lt;strong&gt;negrito&lt;/strong&gt;</div>
+    </div>
+
+    <div class="toggle-wrap">
+      <label class="toggle">
+        <input type="checkbox" id="f-activo" checked/>
+        <span class="toggle-slider"></span>
+      </label>
+      <span class="toggle-label">Publicado (visível no site)</span>
+    </div>
+
+    <button class="btn-save" id="btn-save" onclick="savePost()">Publicar Artigo</button>
+    <button class="btn-new" onclick="resetForm()">+ Novo Artigo</button>
+    <button onclick="gerarESalvarSitemap()" style="margin-top:8px;width:100%;padding:.75rem;background:transparent;border:1px solid rgba(201,162,68,.35);color:rgba(201,162,68,.8);font-family:'Montserrat',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:4px;transition:all .2s;" onmouseover="this.style.borderColor='rgba(201,162,68,.8)';this.style.color='#C9A244'" onmouseout="this.style.borderColor='rgba(201,162,68,.35)';this.style.color='rgba(201,162,68,.8)'">⬇ Regenerar Sitemap</button>
+    <div class="alert" id="alert"></div>
+  </div>
+
+</div>
+
+<!-- Modal confirmação de exclusão -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <div class="modal-title">Excluir artigo?</div>
+    <div class="modal-text">Esta ação não pode ser desfeita. O artigo será removido permanentemente do site.</div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-confirm" id="btn-confirm-del">Excluir</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── SUPABASE ──
+   ⚠️ anon key (no service_role) — pensada para exponerse en el navegador,
+   respeta las políticas RLS. El acceso real lo da el login con Supabase Auth
+   de abajo, no esta key. */
+const SB_URL  = 'https://redaqqxoeciycqgjhpbv.supabase.co';
+const SB_KEY  = 'sb_publishable_XYeljNeSm2awnovoTvzXiQ_va4cFyvU';
+const sb = supabase.createClient(SB_URL, SB_KEY);
+
+let editingId = null;
+let deleteTargetId = null;
+
+/* ── SLUG ── */
+function toSlug(txt) {
+  return txt.toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim().replace(/\s+/g, '-')
+    .substring(0, 80);
+}
+
+document.getElementById('f-titulo').addEventListener('input', function() {
+  document.getElementById('slug-preview').textContent = toSlug(this.value) || '…';
+});
+
+/* ── FECHA DEFAULT ── */
+function setTodayDate() {
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('f-fecha').value = today;
+}
+setTodayDate();
+
+/* ── CARGAR POSTS ── */
+async function loadPosts() {
+  const { data, error } = await sb
+    .from('blog_posts')
+    .select('id, titulo, categoria, fecha, emoji, activo')
+    .order('fecha', { ascending: false });
+
+  const listEl = document.getElementById('post-list');
+  const countEl = document.getElementById('post-count');
+
+  if (error) {
+    listEl.innerHTML = `<div class="empty-state"><div class="big">⚠️</div>Erro ao carregar.<br>Verifique se a tabela blog_posts existe no Supabase.</div>`;
+    countEl.textContent = 'erro';
+    return;
+  }
+
+  countEl.textContent = data.length + (data.length === 1 ? ' artigo' : ' artigos');
+
+  if (!data.length) {
+    listEl.innerHTML = `<div class="empty-state"><div class="big">✍️</div>Nenhum artigo ainda.<br>Crie o primeiro!</div>`;
+    return;
+  }
+
+  listEl.innerHTML = data.map(p => `
+    <div class="post-item" id="item-${p.id}" onclick="editPost(${p.id})">
+      <div class="post-emoji">${p.emoji || '📄'}</div>
+      <div class="post-info">
+        <div class="post-title-list">${p.titulo}</div>
+        <div class="post-meta-list">${p.categoria} · ${formatDate(p.fecha)}</div>
+      </div>
+      <div class="status-dot ${p.activo ? '' : 'off'}" title="${p.activo ? 'Publicado' : 'Rascunho'}"></div>
+      <div class="post-actions">
+        <button class="btn-icon edit" onclick="event.stopPropagation(); editPost(${p.id})" title="Editar">✎</button>
+        <button class="btn-icon" onclick="event.stopPropagation(); confirmDelete(${p.id})" title="Excluir">✕</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return '';
+  const [y, m, d] = dateStr.split('-');
+  const months = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  return `${parseInt(d)} ${months[parseInt(m)-1]} ${y}`;
+}
+
+/* ── EDITAR ── */
+async function editPost(id) {
+  const { data, error } = await sb.from('blog_posts').select('*').eq('id', id).single();
+  if (error || !data) return;
+
+  editingId = id;
+  document.getElementById('form-title').textContent = 'Editar Artigo';
+  document.getElementById('f-emoji').value     = data.emoji || '';
+  document.getElementById('f-categoria').value = data.categoria || 'Tendências';
+  document.getElementById('f-titulo').value    = data.titulo || '';
+  document.getElementById('slug-preview').textContent = data.slug || '';
+  document.getElementById('f-fecha').value     = data.fecha || '';
+  document.getElementById('f-resumen').value   = data.resumen || '';
+  document.getElementById('f-contenido').value = data.contenido || '';
+  // imagen
+  const imgUrl = data.imagen_url || '';
+  document.getElementById('f-imagen-url').value = imgUrl;
+  if (imgUrl) {
+    document.getElementById('img-preview').src = imgUrl;
+    document.getElementById('img-preview-wrap').classList.add('show');
+  } else {
+    document.getElementById('img-preview-wrap').classList.remove('show');
+  }
+  document.getElementById('f-activo').checked  = data.activo !== false;
+  document.getElementById('btn-save').textContent = 'Salvar Alterações';
+
+  document.querySelectorAll('.post-item').forEach(el => el.classList.remove('editing'));
+  const item = document.getElementById('item-' + id);
+  if (item) { item.classList.add('editing'); item.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+
+  document.querySelector('.panel-form').scrollTo({ top: 0, behavior: 'smooth' });
+  hideAlert();
+}
+
+/* ── RESET FORM ── */
+function resetForm() {
+  editingId = null;
+  document.getElementById('form-title').textContent = 'Novo Artigo';
+  document.getElementById('f-emoji').value     = '';
+  document.getElementById('f-categoria').value = 'Tendências';
+  document.getElementById('f-titulo').value    = '';
+  document.getElementById('slug-preview').textContent = '…';
+  setTodayDate();
+  document.getElementById('f-resumen').value   = '';
+  document.getElementById('f-contenido').value = '';
+  document.getElementById('f-imagen-url').value = '';
+  document.getElementById('img-preview-wrap').classList.remove('show');
+  document.getElementById('img-uploading').classList.remove('show');
+  document.getElementById('img-progress').classList.remove('show');
+  document.getElementById('f-activo').checked  = true;
+  document.getElementById('btn-save').textContent = 'Publicar Artigo';
+  document.querySelectorAll('.post-item').forEach(el => el.classList.remove('editing'));
+  hideAlert();
+}
+
+/* ── GUARDAR ── */
+async function savePost() {
+  const titulo    = document.getElementById('f-titulo').value.trim();
+  const resumen   = document.getElementById('f-resumen').value.trim();
+  const contenido = document.getElementById('f-contenido').value.trim();
+
+  if (!titulo || !resumen || !contenido) {
+    showAlert('Preencha título, resumo e conteúdo.', 'err');
+    return;
+  }
+
+  const btn = document.getElementById('btn-save');
+  btn.disabled = true;
+  btn.textContent = 'Salvando…';
+
+  const payload = {
+    titulo,
+    categoria: document.getElementById('f-categoria').value,
+    fecha:     document.getElementById('f-fecha').value,
+    emoji:     document.getElementById('f-emoji').value.trim() || '📄',
+    resumen,
+    contenido,
+    slug:      toSlug(titulo),
+    activo:    document.getElementById('f-activo').checked,
+    imagen_url: document.getElementById('f-imagen-url').value || null,
+  };
+
+  let error;
+  if (editingId) {
+    ({ error } = await sb.from('blog_posts').update(payload).eq('id', editingId));
+  } else {
+    ({ error } = await sb.from('blog_posts').insert(payload));
+  }
+
+  btn.disabled = false;
+  btn.textContent = editingId ? 'Salvar Alterações' : 'Publicar Artigo';
+
+  if (error) {
+    showAlert('Erro ao salvar: ' + error.message, 'err');
+    return;
+  }
+
+  showAlert(editingId ? '✓ Artigo atualizado com sucesso!' : '✓ Artigo publicado com sucesso!', 'ok');
+  loadPosts();
+  if (!editingId) resetForm();
+
+  // ── SITEMAP AUTOMÁTICO ──
+  if (payload.activo) await gerarESalvarSitemap();
+}
+
+/* ── GERADOR DE SITEMAP ─────────────────────────────────────────────────
+   Busca todos los artículos activos, genera el sitemap.xml completo
+   y lo descarga automáticamente para que lo subas al servidor.
+──────────────────────────────────────────────────────────────────────── */
+async function gerarESalvarSitemap() {
+  const DOMAIN = 'https://impactotv.alastecno.com';
+  const HOY    = new Date().toISOString().split('T')[0];
+
+  // Páginas estáticas
+  const estaticas = [
+    { url: `${DOMAIN}/`,              freq: 'monthly', pri: '1.0' },
+    { url: `${DOMAIN}/blog.html`,      freq: 'weekly',  pri: '0.8' },
+  ];
+
+  // Traer todos los artículos activos desde Supabase
+  const { data: posts, error } = await sb
+    .from('blog_posts')
+    .select('slug, fecha')
+    .eq('activo', true)
+    .order('fecha', { ascending: false });
+
+  if (error) {
+    console.warn('Sitemap: error al obtener posts', error.message);
+    return;
+  }
+
+  // Construir XML
+  const urlsEstaticas = estaticas.map(p => `
+  <url>
+    <loc>${p.url}</loc>
+    <lastmod>${HOY}</lastmod>
+    <changefreq>${p.freq}</changefreq>
+    <priority>${p.pri}</priority>
+  </url>`).join('');
+
+  const urlsArticulos = (posts || []).map(p => `
+  <url>
+    <loc>${DOMAIN}/blog-articulo.html?slug=${encodeURIComponent(p.slug)}</loc>
+    <lastmod>${p.fecha || HOY}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>`).join('');
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urlsEstaticas}${urlsArticulos}
+</urlset>`;
+
+  // Descargar automáticamente
+  const blob = new Blob([xml], { type: 'application/xml' });
+  const a    = document.createElement('a');
+  a.href     = URL.createObjectURL(blob);
+  a.download = 'sitemap.xml';
+  a.click();
+  URL.revokeObjectURL(a.href);
+
+  // Mostrar instrucción
+  showAlert(
+    `✓ sitemap.xml descargado (${(posts||[]).length} artigo(s)). Sube el archivo a la carpeta public/ del servidor y volvé a enviar el sitemap en Google Search Console.`,
+    'ok'
+  );
+}
+
+/* ── DELETAR ── */
+function confirmDelete(id) {
+  deleteTargetId = id;
+  document.getElementById('modal').classList.add('open');
+  document.getElementById('btn-confirm-del').onclick = async () => {
+    await sb.from('blog_posts').delete().eq('id', deleteTargetId);
+    closeModal();
+    if (editingId === deleteTargetId) resetForm();
+    loadPosts();
+  };
+}
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  deleteTargetId = null;
+}
+document.getElementById('modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal')) closeModal();
+});
+
+/* ── ALERTS ── */
+function showAlert(msg, type) {
+  const el = document.getElementById('alert');
+  el.textContent = msg; el.className = 'alert show ' + type;
+}
+function hideAlert() {
+  document.getElementById('alert').className = 'alert';
+}
+
+/* ── INIT ── */
+loadPosts();
+
+/* ── IMAGE UPLOAD ── */
+const BUCKET = 'blog-images';
+
+async function handleFileSelect(input) {
+  if (input.files && input.files[0]) await uploadImage(input.files[0]);
+}
+
+async function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('img-upload-area').classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) await uploadImage(file);
+}
+
+async function uploadImage(file) {
+  const uploadingEl  = document.getElementById('img-uploading');
+  const progressEl   = document.getElementById('img-progress');
+  const progressBar  = document.getElementById('img-progress-bar');
+  const previewWrap  = document.getElementById('img-preview-wrap');
+  const previewImg   = document.getElementById('img-preview');
+
+  // validar tamaño (max 5MB)
+  if (file.size > 5 * 1024 * 1024) {
+    showAlert('Imagem muito grande. Máximo 5MB.', 'err'); return;
+  }
+
+  uploadingEl.classList.add('show');
+  progressEl.classList.add('show');
+  progressBar.style.width = '20%';
+
+  const ext      = file.name.split('.').pop().toLowerCase();
+  const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+
+  progressBar.style.width = '50%';
+
+  const { data, error } = await sb.storage
+    .from(BUCKET)
+    .upload(fileName, file, { cacheControl: '3600', upsert: false });
+
+  progressBar.style.width = '100%';
+
+  if (error) {
+    uploadingEl.classList.remove('show');
+    progressEl.classList.remove('show');
+    showAlert('Erro no upload: ' + error.message, 'err');
+    return;
+  }
+
+  const { data: urlData } = sb.storage.from(BUCKET).getPublicUrl(fileName);
+  const publicUrl = urlData.publicUrl;
+
+  document.getElementById('f-imagen-url').value = publicUrl;
+  previewImg.src = publicUrl;
+  previewWrap.classList.add('show');
+
+  setTimeout(() => {
+    uploadingEl.classList.remove('show');
+    progressEl.classList.remove('show');
+    progressBar.style.width = '0%';
+  }, 600);
+}
+
+function removeImage() {
+  document.getElementById('f-imagen-url').value = '';
+  document.getElementById('img-preview').src = '';
+  document.getElementById('img-preview-wrap').classList.remove('show');
+  document.getElementById('f-imagem').value = '';
+}
+
+/* ── LOGIN (Supabase Auth real) ── */
+async function doLogin() {
+  const email = document.getElementById('l-user').value.trim();
+  const pass  = document.getElementById('l-pass').value;
+  const errEl = document.getElementById('login-error');
+  errEl.classList.remove('show');
+
+  const { error } = await sb.auth.signInWithPassword({ email, password: pass });
+
+  if (error) {
+    errEl.classList.add('show');
+    document.getElementById('l-pass').value = '';
+    document.getElementById('l-pass').focus();
+    // animação de shake no box
+    const box = document.querySelector('.login-box');
+    box.style.animation = 'none';
+    box.offsetHeight; // reflow
+    box.style.animation = 'shake .35s ease';
+    return;
+  }
+
+  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('admin-content').style.display = 'block';
+}
+
+async function logout() {
+  await sb.auth.signOut();
+  document.getElementById('admin-content').style.display = 'none';
+  document.getElementById('login-screen').classList.remove('hidden');
+  document.getElementById('l-user').value = '';
+  document.getElementById('l-pass').value = '';
+  document.getElementById('login-error').classList.remove('show');
+}
+
+// Verificar sessão ao carregar (Supabase Auth real, não sessionStorage local)
+(async function checkSession() {
+  const { data } = await sb.auth.getSession();
+  if (data.session) {
+    document.getElementById('login-screen').classList.add('hidden');
+    document.getElementById('admin-content').style.display = 'block';
+  }
+})();
+</script>
+
+<style>
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20%      { transform: translateX(-10px); }
+  40%      { transform: translateX(10px); }
+  60%      { transform: translateX(-7px); }
+  80%      { transform: translateX(7px); }
+}
+</style>
+
+</div><!-- /#admin-content -->
+</body>
+</html>

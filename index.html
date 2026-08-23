@@ -1,0 +1,2473 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ═══════════════════════════════════════════════
+       SEO BÁSICO
+  ═══════════════════════════════════════════════ -->
+  <title>LaVisualMk | Marketing & Estratégia Digital</title>
+  <meta name="description" content="LaVisualMk – Agência de marketing digital especializada em estratégia, branding e publicidade. Transformamos marcas com criatividade e resultados.">
+  <meta name="keywords" content="lavisualmk, marketing digital, estratégia, branding, publicidade, agência">
+  <meta name="author" content="LaVisualMk">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://lavisualmk.alastecno.com/">
+
+  <!-- ═══════════════════════════════════════════════
+       OPEN GRAPH
+  ═══════════════════════════════════════════════ -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="LaVisualMk">
+  <meta property="og:title" content="LaVisualMk | Marketing & Estratégia Digital">
+  <meta property="og:description" content="Agência de marketing digital especializada em estratégia, branding e publicidade. Transformamos marcas com criatividade e resultados.">
+  <meta property="og:url" content="https://lavisualmk.alastecno.com/">
+  <meta property="og:image" content="https://lavisualmk.alastecno.com/og-image.jpg">
+  <meta property="og:locale" content="pt_BR">
+
+  <!-- ═══════════════════════════════════════════════
+       TWITTER CARD
+  ═══════════════════════════════════════════════ -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="LaVisualMk | Marketing & Estratégia Digital">
+  <meta name="twitter:description" content="Agência de marketing digital especializada em estratégia, branding e publicidade.">
+  <meta name="twitter:image" content="https://lavisualmk.alastecno.com/og-image.jpg">
+
+  <!-- ═══════════════════════════════════════════════
+       JSON-LD: WebSite + Organization
+  ═══════════════════════════════════════════════ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://lavisualmk.alastecno.com/#website",
+        "url": "https://lavisualmk.alastecno.com/",
+        "name": "LaVisualMk",
+        "description": "Agência de marketing digital – estratégia, branding e publicidade",
+        "inLanguage": "pt-BR"
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://lavisualmk.alastecno.com/#organization",
+        "name": "LaVisualMk",
+        "url": "https://lavisualmk.alastecno.com/",
+        "logo": "https://lavisualmk.alastecno.com/og-image.jpg",
+        "sameAs": []
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://lavisualmk.alastecno.com/#webpage",
+        "url": "https://lavisualmk.alastecno.com/",
+        "name": "LaVisualMk | Marketing & Estratégia Digital",
+        "isPartOf": { "@id": "https://lavisualmk.alastecno.com/#website" },
+        "about": { "@id": "https://lavisualmk.alastecno.com/#organization" },
+        "inLanguage": "pt-BR"
+      }
+    ]
+  }
+  </script>
+  <!-- Preconnect / dns-prefetch para recursos externos -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+  <link rel="dns-prefetch" href="https://redaqqxoeciycqgjhpbv.supabase.co" />
+  <link rel="preconnect" href="https://redaqqxoeciycqgjhpbv.supabase.co" crossorigin />
+  <!-- Preload del logo (recurso crítico above-the-fold) -->
+  <link rel="preload" href="https://lavisualmk.alastecno.com/lavisual.png" as="image" />
+  <!-- Fuentes: carga no bloqueante con display=swap (swap ya incluido) -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@200;600;700;900&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── RESET & BASE ─────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --white:  #FFFFFF;
+      --gray:   #F2F2F2;
+      --gold:   #C9A244;
+      --gold2:  #e8c96a;
+      --black:  #020202;
+      --dark:   #0a0a0a;
+      --dark2:  #111111;
+      --font-title: 'Cinzel', serif;
+      --font-body:  'Montserrat', sans-serif;
+    }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+    body {
+      font-family: var(--font-body);
+      background: var(--black);
+      color: var(--white);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ─── CUSTOM CURSOR ────────────────────────────── */
+    .cursor {
+      position: fixed; top: 0; left: 0;
+      width: 10px; height: 10px;
+      background: var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      will-change: transform;
+      transition: width .2s, height .2s, background .2s;
+    }
+    .cursor-ring {
+      position: fixed; top: 0; left: 0;
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      will-change: transform;
+      transition: width .12s ease-out, height .12s ease-out, opacity .12s ease-out;
+      opacity: .6;
+    }
+    body:hover .cursor { opacity: 1; }
+
+    /* ─── SCROLL PROGRESS BAR ──────────────────────── */
+    #progress-bar {
+      position: fixed; top: 0; left: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      width: 0%;
+      z-index: 1000;
+      transition: width .05s;
+    }
+
+    /* ─── NAV ──────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 900;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 1rem 4rem .8rem;
+      gap: .5rem;
+      transition: background .4s, backdrop-filter .4s, padding .4s;
+    }
+    nav.scrolled {
+      background: rgba(2,2,2,.92);
+      backdrop-filter: blur(18px);
+      padding: .6rem 4rem .5rem;
+      gap: .35rem;
+      border-bottom: 1px solid rgba(201,162,68,.15);
+    }
+    .nav-bottom {
+      display: flex; align-items: center; justify-content: center;
+      gap: 2.5rem;
+      width: 100%;
+    }
+    .nav-logo {
+      font-family: var(--font-title);
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      color: var(--gold);
+      text-decoration: none;
+      display: flex; align-items: center;
+      gap: .1em;
+    }
+    .nav-logo span { color: var(--white); font-weight: 600; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-family: var(--font-body);
+      font-size: .78rem;
+      font-weight: 500;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.65);
+      text-decoration: none;
+      position: relative;
+      transition: color .3s;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width .3s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover::after { width: 100%; }
+    /* Pantallas special nav item */
+    .nav-links .nav-screens a {
+      color: var(--gold);
+      font-weight: 600;
+    }
+    .nav-links .nav-screens a::before {
+      content: '▶';
+      font-size: .5rem;
+      margin-right: .4rem;
+      vertical-align: middle;
+      opacity: .7;
+    }
+    .nav-links .nav-screens a:hover { color: var(--gold2); }
+    .nav-links .nav-app a {
+      color: var(--gold);
+      font-weight: 600;
+      border: 1px solid rgba(201,162,68,.35);
+      padding: .3rem .7rem;
+      border-radius: 99px;
+    }
+    .nav-links .nav-app a:hover { color: var(--black); background: var(--gold); border-color: var(--gold); }
+    .nav-links .nav-app a::after { display: none; }
+    .nav-cta {
+      font-family: var(--font-body);
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--gold);
+      padding: .65rem 1.6rem;
+      border: none;
+      text-decoration: none;
+      cursor: none;
+      transition: background .3s, transform .2s;
+    }
+    .nav-cta:hover { background: var(--gold2); transform: translateY(-1px); }
+
+    /* ─── HERO ─────────────────────────────────────── */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      min-height: 100svh;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+      background: var(--black);
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 60% 40%, rgba(201,162,68,.08) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 50% at 10% 80%, rgba(201,162,68,.04) 0%, transparent 60%);
+    }
+    /* animated grid lines */
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(201,162,68,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,162,68,.04) 1px, transparent 1px);
+      background-size: 80px 80px;
+      animation: gridMove 18s linear infinite;
+    }
+    @keyframes gridMove {
+      from { transform: translateY(0); }
+      to   { transform: translateY(80px); }
+    }
+    .hero-noise {
+      position: absolute; inset: 0;
+      opacity: .03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    .hero-content {
+      position: relative; z-index: 2;
+      text-align: center;
+      padding: 0 clamp(1rem, 5vw, 2rem);
+      max-width: 900px;
+      width: 100%;
+    }
+    .hero-eyebrow {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(201,162,68,.3);
+      padding: .4rem 1.2rem;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp .8s .3s forwards;
+    }
+    .hero-title {
+      font-family: var(--font-title);
+      font-size: clamp(1.6rem, 5vw, 7.5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -.01em;
+      margin-bottom: 1.8rem;
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+    .hero-title .line {
+      display: block;
+      overflow: hidden;
+    }
+    .hero-title .line span {
+      display: block;
+      opacity: 0;
+      transform: translateY(100%);
+      animation: slideUp .9s forwards;
+    }
+    .hero-title .line:nth-child(1) span { animation-delay: .5s; }
+    .hero-title .line:nth-child(2) span { animation-delay: .7s; color: var(--gold); }
+    .hero-sub {
+      font-size: clamp(.85rem, 2.5vw, 1.1rem);
+      font-weight: 300;
+      color: rgba(255,255,255,.6);
+      line-height: 1.8;
+      max-width: 560px;
+      margin: 0 auto 3rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp .8s 1.1s forwards;
+    }
+    .hero-actions {
+      display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp .8s 1.3s forwards;
+    }
+    .btn-primary {
+      font-family: var(--font-body);
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--gold);
+      padding: 1rem 2.5rem;
+      text-decoration: none;
+      cursor: none;
+      position: relative;
+      overflow: hidden;
+      transition: transform .3s;
+    }
+    .btn-primary::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--gold2);
+      transform: translateX(-101%);
+      transition: transform .35s ease;
+    }
+    .btn-primary:hover { transform: translateY(-2px); }
+    .btn-primary:hover::before { transform: translateX(0); }
+    .btn-primary span { position: relative; z-index: 1; }
+    .btn-ghost {
+      font-family: var(--font-body);
+      font-size: .78rem;
+      font-weight: 600;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--white);
+      background: transparent;
+      border: 1px solid rgba(255,255,255,.25);
+      padding: 1rem 2.5rem;
+      text-decoration: none;
+      cursor: none;
+      transition: border-color .3s, color .3s;
+    }
+    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+    .hero-scroll {
+      position: absolute; bottom: 2.5rem; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: .6rem;
+      opacity: 0;
+      animation: fadeUp .8s 1.8s forwards;
+    }
+    .hero-scroll span {
+      font-size: .6rem;
+      font-weight: 600;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.3);
+    }
+    .scroll-line {
+      width: 1px; height: 50px;
+      background: linear-gradient(var(--gold), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: .3; transform: scaleY(1); }
+      50%       { opacity: 1;  transform: scaleY(1.2); }
+    }
+
+    /* ─── MARQUEE STRIP ────────────────────────────── */
+    .marquee-strip {
+      background: var(--gold);
+      overflow: hidden;
+      padding: .8rem 0;
+      white-space: nowrap;
+    }
+    .marquee-inner {
+      display: inline-flex;
+      animation: marqueeScroll 20s linear infinite;
+    }
+    .marquee-inner span {
+      font-family: var(--font-title);
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--black);
+      padding: 0 2.5rem;
+    }
+    .marquee-inner .dot {
+      color: rgba(2,2,2,.35);
+      padding: 0;
+    }
+    @keyframes marqueeScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ─── SECTION BASE ─────────────────────────────── */
+    section { padding: 8rem 4rem; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .section-label {
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: opacity .6s, transform .6s;
+    }
+    .section-label.visible { opacity: 1; transform: translateX(0); }
+    .section-title {
+      font-family: var(--font-title);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .7s .1s, transform .7s .1s;
+    }
+    .section-title.visible { opacity: 1; transform: translateY(0); }
+    .section-title em { color: var(--gold); font-style: normal; }
+    .section-text {
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: rgba(255,255,255,.6);
+      line-height: 1.9;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .7s .2s, transform .7s .2s;
+    }
+    .section-text.visible { opacity: 1; transform: translateY(0); }
+    .gold-line {
+      width: 60px; height: 2px;
+      background: var(--gold);
+      margin: 2rem 0;
+      opacity: 0;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: opacity .6s .3s, transform .6s .3s;
+    }
+    .gold-line.visible { opacity: 1; transform: scaleX(1); }
+
+    /* ─── SOBRE / ABOUT ────────────────────────────── */
+    #sobre { background: var(--dark2); }
+    .sobre-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+    .sobre-visual {
+      position: relative;
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity .9s .2s, transform .9s .2s;
+    }
+    .sobre-visual.visible { opacity: 1; transform: translateX(0); }
+    .sobre-frame {
+      width: 100%;
+      aspect-ratio: 4/5;
+      background: linear-gradient(135deg, rgba(201,162,68,.15), rgba(201,162,68,.03));
+      border: 1px solid rgba(201,162,68,.2);
+      position: relative;
+      overflow: hidden;
+    }
+    .sobre-frame::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 30%, rgba(201,162,68,.12), transparent 60%),
+        linear-gradient(135deg, transparent 40%, rgba(201,162,68,.06));
+    }
+    .sobre-frame-text {
+      position: absolute; bottom: 2.5rem; left: 2.5rem; right: 2.5rem;
+    }
+    .sobre-frame-text .big-num {
+      font-family: var(--font-title);
+      font-size: 5rem;
+      font-weight: 900;
+      color: var(--gold);
+      line-height: 1;
+      opacity: .2;
+    }
+    .sobre-frame-text .label {
+      font-size: .7rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.5);
+    }
+    .corner-decoration {
+      position: absolute; top: -1.5rem; right: -1.5rem;
+      width: 80px; height: 80px;
+      border-top: 2px solid var(--gold);
+      border-right: 2px solid var(--gold);
+    }
+    .corner-decoration2 {
+      position: absolute; bottom: -1.5rem; left: -1.5rem;
+      width: 80px; height: 80px;
+      border-bottom: 2px solid rgba(201,162,68,.3);
+      border-left: 2px solid rgba(201,162,68,.3);
+    }
+    .about-stats {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .stat-item {
+      border-left: 2px solid var(--gold);
+      padding-left: 1.2rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .6s, transform .6s;
+    }
+    .stat-item.visible { opacity: 1; transform: translateY(0); }
+    .stat-num {
+      font-family: var(--font-title);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--gold);
+    }
+    .stat-desc {
+      font-size: .75rem;
+      color: rgba(255,255,255,.45);
+      letter-spacing: .05em;
+      margin-top: .2rem;
+    }
+
+    /* ─── SERVICES ─────────────────────────────────── */
+    #servicos { background: var(--black); }
+    .services-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: end;
+      margin-bottom: 5rem;
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px;
+      background: rgba(201,162,68,.1);
+    }
+    .service-card {
+      background: var(--dark2);
+      padding: 2.8rem 2.2rem;
+      position: relative;
+      overflow: hidden;
+      cursor: none;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .6s, transform .6s, background .3s;
+    }
+    .service-card.visible { opacity: 1; transform: translateY(0); }
+    .service-card:hover { background: #161616; }
+    .service-card::before {
+      content: '';
+      position: absolute; bottom: 0; left: 0;
+      height: 2px; width: 0;
+      background: var(--gold);
+      transition: width .4s ease;
+    }
+    .service-card:hover::before { width: 100%; }
+    .service-num {
+      font-family: var(--font-title);
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .25em;
+      color: var(--gold);
+      opacity: .5;
+      margin-bottom: 1.8rem;
+    }
+    .service-icon {
+      width: 42px; height: 42px;
+      margin-bottom: 1.5rem;
+      color: var(--gold);
+    }
+    .service-name {
+      font-family: var(--font-title);
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+      margin-bottom: 1rem;
+      line-height: 1.3;
+    }
+    .service-desc {
+      font-size: .82rem;
+      font-weight: 300;
+      color: rgba(255,255,255,.5);
+      line-height: 1.8;
+    }
+    .service-card.featured {
+      background: linear-gradient(135deg, rgba(201,162,68,.12), rgba(201,162,68,.02));
+      border: 1px solid rgba(201,162,68,.2);
+    }
+    .service-card.featured .service-name { color: var(--gold); }
+    .service-card.featured .service-desc { color: rgba(255,255,255,.65); }
+    .service-bullets {
+      list-style: none;
+      margin-top: 1.2rem;
+    }
+    .service-bullets li {
+      font-size: .78rem;
+      color: rgba(255,255,255,.5);
+      padding: .35rem 0;
+      padding-left: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+      position: relative;
+    }
+    .service-bullets li::before {
+      content: '—';
+      position: absolute; left: 0;
+      color: var(--gold);
+      font-size: .6rem;
+    }
+
+    /* ─── DIFERENCIAL ──────────────────────────────── */
+    #diferencial {
+      background: var(--dark2);
+      position: relative;
+      overflow: hidden;
+    }
+    .diferencial-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 70% at 80% 50%, rgba(201,162,68,.06), transparent 70%);
+      pointer-events: none;
+    }
+    .diferencial-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8rem;
+      align-items: center;
+    }
+    .diferencial-visual {
+      position: relative;
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: opacity .9s, transform .9s;
+    }
+    .diferencial-visual.visible { opacity: 1; transform: translateX(0); }
+    .diff-card-stack { position: relative; }
+    .diff-card {
+      background: var(--dark);
+      border: 1px solid rgba(201,162,68,.15);
+      padding: 1.8rem;
+      position: relative;
+    }
+    .diff-card + .diff-card { margin-top: 1px; }
+    .diff-card-header {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .diff-icon {
+      width: 36px; height: 36px;
+      background: rgba(201,162,68,.1);
+      border: 1px solid rgba(201,162,68,.2);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold);
+      font-size: .9rem;
+    }
+    .diff-card-title {
+      font-family: var(--font-title);
+      font-size: .85rem;
+      font-weight: 600;
+      letter-spacing: .05em;
+    }
+    .diff-bar-wrap { height: 3px; background: rgba(255,255,255,.06); }
+    .diff-bar {
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      width: 0;
+      transition: width 1.2s ease;
+    }
+    .diff-bar.animate { width: var(--w, 80%); }
+    .diff-bar-label {
+      display: flex; justify-content: space-between;
+      margin-top: .5rem;
+    }
+    .diff-bar-label span {
+      font-size: .65rem;
+      color: rgba(255,255,255,.3);
+      letter-spacing: .1em;
+    }
+    .diff-bar-label strong {
+      font-size: .65rem;
+      color: var(--gold);
+    }
+    /* quote block */
+    .quote-block {
+      position: relative;
+      padding: 3rem;
+      background: rgba(201,162,68,.04);
+      border-left: 3px solid var(--gold);
+      margin-top: 3rem;
+    }
+    .quote-text {
+      font-family: var(--font-title);
+      font-size: 1.4rem;
+      font-weight: 600;
+      line-height: 1.5;
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+    .quote-text em { color: var(--gold); font-style: normal; }
+    .quote-mark {
+      font-family: var(--font-title);
+      font-size: 5rem;
+      color: var(--gold);
+      opacity: .1;
+      line-height: 1;
+      position: absolute;
+      top: 1rem; right: 1.5rem;
+    }
+
+    /* ─── RESULTADOS ───────────────────────────────── */
+    #resultados {
+      background: var(--black);
+      text-align: center;
+    }
+    .results-numbers {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: rgba(201,162,68,.08);
+      margin: 5rem 0;
+    }
+    .result-cell {
+      background: var(--dark2);
+      padding: 3.5rem 2rem;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .6s, transform .6s;
+    }
+    .result-cell.visible { opacity: 1; transform: translateY(0); }
+    .result-cell::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0;
+      transition: opacity .4s;
+    }
+    .result-cell:hover::before { opacity: 1; }
+    .result-num {
+      font-family: var(--font-title);
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: var(--gold);
+      line-height: 1;
+      display: block;
+    }
+    .result-label {
+      font-size: .72rem;
+      font-weight: 500;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.4);
+      margin-top: .8rem;
+      display: block;
+    }
+    .microcopy-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .micro {
+      font-family: var(--font-title);
+      font-size: .9rem;
+      font-weight: 600;
+      color: rgba(255,255,255,.35);
+      letter-spacing: .05em;
+      padding: 1.2rem 1.5rem;
+      border: 1px solid rgba(255,255,255,.05);
+      transition: color .3s, border-color .3s;
+      opacity: 0;
+      transform: scale(.95);
+      transition: opacity .5s, transform .5s, color .3s, border-color .3s;
+    }
+    .micro.visible { opacity: 1; transform: scale(1); }
+    .micro:hover { color: var(--gold); border-color: rgba(201,162,68,.25); }
+
+    /* ─── CTA BAND ─────────────────────────────────── */
+    #cta-band {
+      padding: 6rem 4rem;
+      background: var(--gold);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    #cta-band::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 30% 50%, rgba(2,2,2,.08), transparent),
+        radial-gradient(ellipse 40% 60% at 70% 50%, rgba(2,2,2,.06), transparent);
+    }
+    .cta-title {
+      font-family: var(--font-title);
+      font-size: clamp(1.8rem, 4vw, 3.5rem);
+      font-weight: 900;
+      color: var(--black);
+      line-height: 1.15;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .cta-sub {
+      font-size: 1rem;
+      font-weight: 400;
+      color: rgba(2,2,2,.6);
+      margin-bottom: 2.5rem;
+      position: relative;
+    }
+    .btn-dark {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: var(--black);
+      padding: 1rem 2.8rem;
+      text-decoration: none;
+      cursor: none;
+      position: relative;
+      transition: transform .3s;
+    }
+    .btn-dark:hover { transform: translateY(-2px); }
+
+    /* ─── CONTATO ──────────────────────────────────── */
+    #contato { background: var(--dark2); }
+    .contato-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 6rem;
+      align-items: start;
+    }
+    .contact-form-wrap {
+      opacity: 0;
+      transform: translateX(30px);
+      transition: opacity .8s .2s, transform .8s .2s;
+    }
+    .contact-form-wrap.visible { opacity: 1; transform: translateX(0); }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    .form-group label {
+      display: block;
+      font-size: .65rem;
+      font-weight: 600;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.4);
+      margin-bottom: .6rem;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.1);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: .9rem;
+      font-weight: 300;
+      padding: .9rem 1.2rem;
+      outline: none;
+      transition: border-color .3s, background .3s;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--gold);
+      background: rgba(201,162,68,.03);
+    }
+    .form-group textarea { height: 130px; resize: vertical; }
+    .form-submit {
+      width: 100%;
+      font-family: var(--font-body);
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--gold);
+      border: none;
+      padding: 1.1rem;
+      cursor: none;
+      transition: background .3s, transform .2s;
+    }
+    .form-submit:hover { background: var(--gold2); transform: translateY(-1px); }
+    .contact-info { padding-top: .5rem; }
+    .info-item {
+      display: flex; align-items: flex-start; gap: 1.2rem;
+      padding: 1.8rem 0;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: opacity .6s, transform .6s;
+    }
+    .info-item.visible { opacity: 1; transform: translateX(0); }
+    .info-icon {
+      width: 40px; height: 40px; min-width: 40px;
+      border: 1px solid rgba(201,162,68,.2);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold);
+    }
+    .info-label {
+      font-size: .62rem;
+      font-weight: 600;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.3);
+      margin-bottom: .3rem;
+    }
+    .info-value {
+      font-size: .9rem;
+      color: rgba(255,255,255,.75);
+    }
+
+    /* ─── FOOTER ───────────────────────────────────── */
+    footer {
+      background: var(--black);
+      border-top: 1px solid rgba(201,162,68,.1);
+      padding: 3rem 4rem;
+    }
+    .footer-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-logo {
+      font-family: var(--font-title);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: .2em;
+    }
+    .footer-copy {
+      font-size: .68rem;
+      color: rgba(255,255,255,.2);
+      letter-spacing: .08em;
+    }
+    .footer-links { display: flex; gap: 2rem; }
+    .footer-links a {
+      font-size: .65rem;
+      font-weight: 500;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.3);
+      text-decoration: none;
+      transition: color .3s;
+    }
+    .footer-links a:hover { color: var(--gold); }
+
+    /* ─── ANIMATIONS ───────────────────────────────── */
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── WHATSAPP FLOAT ──────────────────────────────── */
+    .wa-float {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 9000;
+      width: 58px;
+      height: 58px;
+      background: #25D366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 24px rgba(37,211,102,.4);
+      cursor: none;
+      text-decoration: none;
+      transition: transform .3s, box-shadow .3s;
+      animation: waPulse 3s ease-in-out infinite;
+    }
+    .wa-float svg { width: 28px; height: 28px; color: #fff; }
+    .wa-float:hover {
+      transform: scale(1.1) translateY(-3px);
+      box-shadow: 0 8px 30px rgba(37,211,102,.55);
+      animation: none;
+    }
+    .wa-tooltip {
+      position: absolute;
+      right: 68px;
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: .68rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      white-space: nowrap;
+      padding: .45rem 1rem;
+      border: 1px solid rgba(37,211,102,.3);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(6px);
+      transition: opacity .25s, transform .25s;
+    }
+    .wa-float:hover .wa-tooltip { opacity: 1; transform: translateX(0); }
+    @keyframes waPulse {
+      0%, 100% { box-shadow: 0 4px 24px rgba(37,211,102,.4); }
+      50%       { box-shadow: 0 4px 36px rgba(37,211,102,.7); }
+    }
+
+    /* ─── HAMBURGER ────────────────────────────────── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 36px; height: 36px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 1001;
+    }
+    .hamburger span {
+      display: block;
+      height: 1.5px;
+      background: var(--gold);
+      border-radius: 2px;
+      transition: transform .35s ease, opacity .35s ease, width .35s ease;
+      transform-origin: center;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* Mobile nav drawer */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(2,2,2,.97);
+      backdrop-filter: blur(20px);
+      z-index: 950;
+      padding: 6rem 2.5rem 3rem;
+      flex-direction: column;
+      gap: 0;
+      border-bottom: 1px solid rgba(201,162,68,.15);
+      transform: translateY(-100%);
+      transition: transform .4s cubic-bezier(.4,0,.2,1);
+    }
+    .mobile-nav.open {
+      transform: translateY(0);
+    }
+    .mobile-nav a {
+      font-family: var(--font-body);
+      font-size: 1.1rem;
+      font-weight: 500;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.7);
+      text-decoration: none;
+      padding: 1.1rem 0;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      transition: color .3s;
+    }
+    .mobile-nav a:hover { color: var(--gold); }
+    .mobile-nav .mobile-cta {
+      margin-top: 2rem;
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--gold);
+      padding: 1rem 2rem;
+      text-align: center;
+      text-decoration: none;
+      transition: background .3s;
+      border-bottom: none;
+    }
+    .mobile-nav .mobile-cta:hover { background: var(--gold2); color: var(--black); }
+
+    /* ─── RESPONSIVE ───────────────────────────────── */
+
+    /* Touch devices: restore cursor */
+    @media (hover: none) and (pointer: coarse) {
+      body { cursor: auto; }
+      .cursor, .cursor-ring { display: none; }
+      a, button, .service-card, .micro, .nav-cta, .btn-primary,
+      .btn-ghost, .btn-dark, .form-submit, .wa-float, .bot-btn { cursor: pointer; }
+    }
+
+    /* ── Tablet ─────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      nav { padding: .9rem 2.5rem .7rem; }
+      nav.scrolled { padding: .6rem 2.5rem .5rem; }
+      section { padding: 6rem 2.5rem; }
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .diferencial-grid { gap: 4rem; }
+      .sobre-grid { gap: 4rem; }
+      .contato-grid { gap: 4rem; }
+    }
+
+    /* ── Mobile ─────────────────────────────────────── */
+    @media (max-width: 900px) {
+      nav { padding: .8rem 1.5rem; flex-direction: row; align-items: center; justify-content: space-between; gap: 0; }
+      nav.scrolled { padding: .7rem 1.5rem; }
+      .nav-bottom { display: none; }
+      .hamburger { display: flex; position: static; }
+
+      section { padding: 5rem 1.5rem; }
+      .sobre-grid, .diferencial-grid, .contato-grid,
+      .services-header { grid-template-columns: 1fr; gap: 3rem; }
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .results-numbers { grid-template-columns: 1fr 1fr; }
+      .microcopy-grid { grid-template-columns: 1fr; }
+      .footer-inner { flex-direction: column; gap: 1.5rem; text-align: center; }
+      .footer-links { justify-content: center; }
+      #cta-band { padding: 4rem 1.5rem; }
+      footer { padding: 2.5rem 1.5rem; }
+
+      /* Sobre visual: reduce height on mobile */
+      .sobre-frame { aspect-ratio: 3/2; }
+      .corner-decoration, .corner-decoration2 { width: 50px; height: 50px; }
+
+      /* Quote block padding */
+      .quote-block { padding: 2rem 1.5rem; }
+
+      /* Diferencial visual shown below text on mobile */
+      .diferencial-grid > :first-child { order: 2; }
+      .diferencial-grid > :last-child { order: 1; }
+    }
+
+    /* ── Small mobile ───────────────────────────────── */
+    @media (max-width: 480px) {
+      nav { padding: .8rem 1.2rem; }
+      section { padding: 4rem 1.2rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .results-numbers { grid-template-columns: 1fr; }
+      .about-stats { grid-template-columns: 1fr; }
+      .hero-actions { flex-direction: column; align-items: center; }
+      .btn-primary, .btn-ghost { width: 100%; text-align: center; }
+      .hero-content { padding: 0 1rem; }
+      #cta-band { padding: 3.5rem 1.2rem; }
+      .result-num { font-size: 2.8rem; }
+      footer { padding: 2rem 1.2rem; }
+    }
+
+    /* ── Botones flotantes en móvil (portrait y landscape) ── */
+    @media (max-width: 900px) {
+      --float-size:   50px;
+      --float-bottom: 1.4rem;
+
+      .wa-float {
+        width: 50px; height: 50px;
+        bottom: 1.4rem; right: 1.4rem;
+      }
+      .bot-float {
+        bottom: 1.4rem; left: 1.4rem;
+      }
+      .bot-btn {
+        width: 50px; height: 50px;
+      }
+      .bot-btn svg { width: 22px; height: 22px; }
+      .wa-float svg { width: 24px; height: 24px; }
+      .bot-bubble {
+        bottom: calc(1.4rem + 50px + 10px);
+        left: 1.4rem;
+      }
+    }
+
+    /* ── Landscape mobile (altura corta) ────────────── */
+    @media (max-height: 500px) and (orientation: landscape) {
+      #hero {
+        min-height: 100svh;
+        padding-top: 4rem;
+        padding-bottom: 2rem;
+        align-items: flex-start;
+      }
+      .hero-content { padding: 0 1.5rem; }
+      .hero-eyebrow { margin-bottom: 1rem; font-size: .6rem; }
+      .hero-title {
+        font-size: clamp(1.3rem, 5vh, 2.8rem);
+        margin-bottom: 1rem;
+      }
+      .hero-sub { margin-bottom: 1.2rem; font-size: .82rem; }
+      .hero-scroll { display: none; }
+      .hero-actions { gap: .8rem; }
+      .btn-primary, .btn-ghost { padding: .7rem 1.6rem; font-size: .72rem; }
+
+      .wa-float  { width: 44px; height: 44px; bottom: 1rem; right: 1rem; }
+      .bot-float { bottom: 1rem; left: 1rem; }
+      .bot-btn   { width: 44px; height: 44px; }
+      .bot-bubble { bottom: calc(1rem + 44px + 10px); left: 1rem; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: .4; transform: scale(.7); }
+    }
+
+    /* ─── HERO VIDEO ─────────────────────────────── */
+    .hero-video-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 740px;
+      margin: 3.5rem auto 0;
+      opacity: 0;
+      animation: fadeUp .9s 1.6s forwards;
+      cursor: default;
+    }
+    .hero-video-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--black);
+      border: 1px solid rgba(201,162,68,.2);
+      overflow: hidden;
+    }
+    .hero-video-frame video {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+    .video-corner { position: absolute; width: 30px; height: 30px; }
+    .video-corner.tl { top: 10px; left: 10px; border-top: 1px solid var(--gold); border-left: 1px solid var(--gold); }
+    .video-corner.tr { top: 10px; right: 10px; border-top: 1px solid var(--gold); border-right: 1px solid var(--gold); }
+    .video-corner.bl { bottom: 10px; left: 10px; border-bottom: 1px solid var(--gold); border-left: 1px solid var(--gold); }
+    .video-corner.br { bottom: 10px; right: 10px; border-bottom: 1px solid var(--gold); border-right: 1px solid var(--gold); }
+    .video-tap-hint { display: none; }
+    @media(max-width: 500px) {
+      .hero-video-wrap { max-width: 92vw; cursor: pointer; }
+      .video-tap-hint {
+        display: flex;
+        align-items: center; justify-content: center; gap: .4rem;
+        margin-top: .6rem;
+        font-size: .62rem; letter-spacing: .15em; text-transform: uppercase;
+        color: rgba(201,162,68,.55);
+        animation: pulse 2.5s ease-in-out infinite;
+      }
+      .video-tap-hint svg { width: 12px; height: 12px; fill: none; stroke: var(--gold); stroke-width: 1.5; opacity: .55; }
+    }
+
+    /* ─── VIDEO LIGHTBOX ─────────────────────────── */
+    .video-lightbox {
+      position: fixed; inset: 0;
+      background: rgba(2,2,2,.94);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 9999;
+      display: flex; align-items: center; justify-content: center;
+      padding: 1rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s ease;
+    }
+    .video-lightbox.open { opacity: 1; pointer-events: all; }
+    .video-lightbox-inner {
+      position: relative;
+      width: 100%; max-width: 800px;
+      border: 1px solid rgba(201,162,68,.25);
+      box-shadow: 0 30px 90px rgba(0,0,0,.8);
+      transform: scale(.95);
+      transition: transform .35s cubic-bezier(.34,1.2,.64,1);
+    }
+    .video-lightbox.open .video-lightbox-inner { transform: scale(1); }
+    .video-lightbox-inner video {
+      width: 100%; height: auto;
+      aspect-ratio: 16/9;
+      display: block; background: #000;
+    }
+    .video-lightbox-close {
+      position: absolute; top: -.5rem; right: -.5rem;
+      width: 36px; height: 36px;
+      background: var(--gold); border: none; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      font-size: 1rem; color: var(--black); font-weight: 700; line-height: 1;
+      box-shadow: 0 4px 16px rgba(0,0,0,.5);
+      transition: background .2s, transform .2s; z-index: 2;
+    }
+    .video-lightbox-close:hover { background: var(--gold2); transform: scale(1.1); }
+  </style>
+</head>
+<body>
+
+  <!-- CURSOR -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- PROGRESS BAR -->
+  <div id="progress-bar"></div>
+
+  <!-- ─── NAVIGATION ──────────────────────────────── -->
+  <nav id="navbar">
+    <a class="nav-logo" href="#hero" translate="no">
+      <img src="https://lavisualmk.alastecno.com/lavisual.png" alt="LaVisualMk logo" width="120" height="38" fetchpriority="high" style="height:38px;width:auto;vertical-align:middle;margin-right:.8rem;border-radius:4px;">La&nbsp;<span>VisualMk</span>
+    </a>
+    <div class="nav-bottom">
+      <ul class="nav-links">
+        <li><a href="#sobre">Sobre nós</a></li>
+        <li><a href="#servicos">Serviços</a></li>
+        <li><a href="#diferencial">Diferencial</a></li>
+        <li><a href="#resultados">Resultados</a></li>
+        <li><a href="#contato">Contato</a></li>
+        <li class="nav-screens"><a href="https://impactotv.alastecno.com" target="_blank" rel="noopener" data-track="nav-telas">Telas</a></li>
+        <li class="nav-app"><a href="/cliente/" data-track="nav-baixar-app">📲 Baixar App</a></li>
+      </ul>
+      <a class="nav-cta" href="#contato" data-track="nav-solicitar-diagnostico">Solicitar diagnóstico</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile nav drawer -->
+  <div class="mobile-nav" id="mobileNav" aria-hidden="true">
+    <a href="#sobre"       class="mobile-nav-link">Sobre nós</a>
+    <a href="#servicos"    class="mobile-nav-link">Serviços</a>
+    <a href="#diferencial" class="mobile-nav-link">Diferencial</a>
+    <a href="#resultados"  class="mobile-nav-link">Resultados</a>
+    <a href="#contato"     class="mobile-nav-link">Contato</a>
+    <a href="https://impactotv.alastecno.com" target="_blank" rel="noopener" class="mobile-nav-link" style="color:var(--gold);font-weight:600;">▶ Telas</a>
+    <a href="/cliente/" class="mobile-nav-link" style="color:var(--gold);font-weight:600;" data-track="mobile-baixar-app">📲 Baixar App</a>
+    <a href="#contato"     class="mobile-cta" data-track="mobile-solicitar-diagnostico">Solicitar diagnóstico</a>
+  </div>
+
+  <!-- ─── HERO ─────────────────────────────────────── -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-noise"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Marketing & Estratégia</div>
+      <h1 class="hero-title">
+        <span class="line"><span>Transformamos</span></span>
+        <span class="line"><span>presença em vendas.</span></span>
+      </h1>
+      <p class="hero-sub">
+        Estratégia, tráfego pago e mídia própria para negócios que querem crescer com previsibilidade.
+      </p>
+      <div class="hero-actions">
+        <a class="btn-primary" href="#contato" data-track="hero-solicitar-diagnostico"><span>Solicitar diagnóstico</span></a>
+        <a class="btn-ghost" href="#servicos" data-track="hero-ver-servicos">Ver serviços</a>
+      </div>
+
+      <!-- Vídeo de publicidade -->
+      <div class="hero-video-wrap" id="hero-video-wrap" onclick="openVideoLightbox()">
+        <div class="hero-video-frame">
+          <div class="video-corner tl"></div>
+          <div class="video-corner tr"></div>
+          <div class="video-corner bl"></div>
+          <div class="video-corner br"></div>
+          <video
+            id="hero-video-thumb"
+            src="https://lavisualmk.alastecno.com/lavisualmk.mp4"
+            controls
+            autoplay loop playsinline muted
+            preload="metadata">
+          </video>
+        </div>
+        <div class="video-tap-hint">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+          Toque para ver em tela cheia
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-scroll">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- VIDEO LIGHTBOX (mobile) -->
+  <div class="video-lightbox" id="video-lightbox" onclick="handleLightboxClick(event)">
+    <div class="video-lightbox-inner">
+      <button class="video-lightbox-close" onclick="closeVideoLightbox()" aria-label="Fechar">✕</button>
+      <video
+        id="lightbox-video"
+        src="https://lavisualmk.alastecno.com/lavisualmk.mp4"
+        controls
+        autoplay loop playsinline muted
+        preload="none">
+      </video>
+    </div>
+  </div>
+
+  <!-- ─── MARQUEE ───────────────────────────────────── -->
+  <div class="marquee-strip">
+    <div class="marquee-inner" id="marqueeInner">
+      <span>Estratégia</span><span class="dot">✦</span>
+      <span>Tráfego Pago</span><span class="dot">✦</span>
+      <span>Mídia Física</span><span class="dot">✦</span>
+      <span>Posicionamento</span><span class="dot">✦</span>
+      <span>Conversão</span><span class="dot">✦</span>
+      <span>Autoridade</span><span class="dot">✦</span>
+      <span>Presença Local</span><span class="dot">✦</span>
+      <span>Crescimento</span><span class="dot">✦</span>
+      <span>Estratégia</span><span class="dot">✦</span>
+      <span>Tráfego Pago</span><span class="dot">✦</span>
+      <span>Mídia Física</span><span class="dot">✦</span>
+      <span>Posicionamento</span><span class="dot">✦</span>
+      <span>Conversão</span><span class="dot">✦</span>
+      <span>Autoridade</span><span class="dot">✦</span>
+      <span>Presença Local</span><span class="dot">✦</span>
+      <span>Crescimento</span><span class="dot">✦</span>
+    </div>
+  </div>
+
+  <!-- ─── SOBRE ─────────────────────────────────────── -->
+  <section id="sobre">
+    <div class="container">
+      <div class="sobre-grid">
+        <!-- text -->
+        <div>
+          <div class="section-label">Sobre a LaVisualMk</div>
+          <h2 class="section-title">Marketing não é <em>estética</em> — é resultado.</h2>
+          <div class="gold-line"></div>
+          <p class="section-text">
+            A LaVisualMk nasceu com um objetivo claro: ajudar empresas a crescer com estratégia, e não com tentativas.<br><br>
+            Nosso diferencial está na integração entre canais. Combinamos análise, posicionamento, tráfego pago e mídia física através de telas em pontos estratégicos, criando uma presença forte e consistente.<br><br>
+            Isso permite que sua marca seja vista mais vezes, por mais pessoas, e com maior impacto.
+          </p>
+          <div class="about-stats">
+            <div class="stat-item">
+              <div class="stat-num">Digital</div>
+              <div class="stat-desc">Tráfego pago & posicionamento online</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num">Físico</div>
+              <div class="stat-desc">Telas em pontos estratégicos</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num">100%</div>
+              <div class="stat-desc">Foco em resultado e conversão</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num">360°</div>
+              <div class="stat-desc">Ecossistema completo de visibilidade</div>
+            </div>
+          </div>
+        </div>
+        <!-- visual -->
+        <div class="sobre-visual">
+          <div class="corner-decoration"></div>
+          <div class="corner-decoration2"></div>
+          <div class="sobre-frame">
+            <div class="sobre-frame-text">
+              <div class="big-num">LV</div>
+              <div class="label">LaVisualMk · Marketing & Estratégia</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SERVIÇOS ──────────────────────────────────── -->
+  <section id="servicos">
+    <div class="container">
+      <div class="services-header">
+        <div>
+          <div class="section-label">O que fazemos</div>
+          <h2 class="section-title">O que podemos fazer pelo seu <em>negócio</em></h2>
+        </div>
+        <div>
+          <p class="section-text">
+            Cada serviço foi desenhado para criar múltiplos pontos de contato com o seu cliente — aumentando a lembrança de marca e acelerando a decisão de compra.
+          </p>
+        </div>
+      </div>
+
+      <div class="services-grid">
+        <!-- 1 -->
+        <div class="service-card">
+          <div class="service-num">01</div>
+          <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+          </svg>
+          <div class="service-name">Gestão de Tráfego Pago</div>
+          <div class="service-desc">Criamos, gerenciamos e otimizamos campanhas com foco em resultado — leads qualificados e vendas previsíveis.</div>
+        </div>
+        <!-- 2 -->
+        <div class="service-card">
+          <div class="service-num">02</div>
+          <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+          <div class="service-name">Estratégia de Marketing</div>
+          <div class="service-desc">Planejamento completo com foco em crescimento e posicionamento. Direção clara antes de qualquer investimento.</div>
+        </div>
+        <!-- 3 -->
+        <div class="service-card">
+          <div class="service-num">03</div>
+          <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
+          </svg>
+          <div class="service-name">Estrutura de Funil</div>
+          <div class="service-desc">Transformamos atenção em vendas. Organizamos o processo de ponta a ponta para maximizar cada oportunidade.</div>
+        </div>
+        <!-- 4 -->
+        <div class="service-card featured" style="cursor:default;">
+          <div class="service-num">04</div>
+          <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+          </svg>
+          <div class="service-name">Mídia em Telas (Rede Própria)</div>
+          <div class="service-desc">Divulgamos sua marca em telas instaladas em estabelecimentos parceiros de alto fluxo.</div>
+          <ul class="service-bullets">
+            <li>Alto fluxo de pessoas</li>
+            <li>Presença local estratégica</li>
+            <li>Reforço de marca contínuo</li>
+            <li>Integração com campanhas digitais</li>
+          </ul>
+          <a href="https://impactotv.alastecno.com" target="_blank" rel="noopener" data-track="servicio-ver-telas"
+             style="display:inline-flex;align-items:center;gap:.5rem;margin-top:1.6rem;
+                    font-family:var(--font-body);font-size:.72rem;font-weight:700;
+                    letter-spacing:.18em;text-transform:uppercase;
+                    color:var(--black);background:var(--gold);
+                    padding:.6rem 1.3rem;text-decoration:none;
+                    transition:background .25s,transform .2s;cursor:pointer;"
+             onmouseover="this.style.background='var(--gold2)';this.style.transform='translateY(-2px)'"
+             onmouseout="this.style.background='var(--gold)';this.style.transform='translateY(0)'">
+            ver rede de telas
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+        <!-- 5 -->
+        <div class="service-card">
+          <div class="service-num">05</div>
+          <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
+          <div class="service-name">Posicionamento de Marca</div>
+          <div class="service-desc">Clareza na comunicação para atrair o público certo no momento certo — online e dentro de estabelecimentos parceiros.</div>
+        </div>
+        <!-- 6 -->
+        <div class="service-card">
+          <div class="service-num">06</div>
+          <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <div class="service-name">Consultoria Estratégica</div>
+          <div class="service-desc">Direção clara antes de investir. Diagnóstico completo da sua situação atual e mapa de crescimento.</div>
+        </div>
+      </div>
+
+      <div style="text-align:center; margin-top:3.5rem; opacity:0; transform:translateY(20px); transition:opacity .6s .2s, transform .6s .2s;" class="fade-up-item">
+        <a class="btn-primary" href="#contato" data-track="btn-solicitar-proposta"><span>Solicitar proposta</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── IMPACTO TV PROMO BANNER ───────────────────── -->
+  <section id="pantallas" style="padding:0;background:var(--black);position:relative;overflow:hidden;">
+    <!-- animated background grid -->
+    <div style="position:absolute;inset:0;
+      background-image:linear-gradient(rgba(201,162,68,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(201,162,68,.035) 1px,transparent 1px);
+      background-size:60px 60px;pointer-events:none;"></div>
+    <!-- gold glow -->
+    <div style="position:absolute;inset:0;
+      background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(201,162,68,.09),transparent 70%);
+      pointer-events:none;"></div>
+
+    <div style="max-width:1200px;margin:0 auto;padding:6rem 4rem;
+                display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;
+                position:relative;z-index:1;">
+
+      <!-- LEFT: copy -->
+      <div>
+        <div style="font-size:.62rem;font-weight:700;letter-spacing:.45em;text-transform:uppercase;
+                    color:var(--gold);margin-bottom:1.2rem;">
+          ▶ Rede de Telas Digitais
+        </div>
+        <h2 style="font-family:var(--font-title);font-size:clamp(1.8rem,3.5vw,3rem);
+                   font-weight:900;line-height:1.1;margin-bottom:1.4rem;color:var(--white);">
+          Sua marca em telas de<br><em style="color:var(--gold);font-style:normal;">alto impacto visual</em>
+        </h2>
+        <div style="width:50px;height:2px;background:var(--gold);margin-bottom:1.6rem;"></div>
+        <p style="font-size:.95rem;font-weight:300;color:rgba(255,255,255,.6);line-height:1.9;margin-bottom:2rem;">
+          A <strong style="color:rgba(255,255,255,.85)">Rede Impacto TV</strong> instala telas LED de alta definição em 
+          pontos estratégicos de alto fluxo. Sua publicidade chega a milhares de pessoas por dia, 
+          reforçando a presença da sua marca no mundo físico.
+        </p>
+
+        <!-- mini feature list -->
+        <div style="display:flex;flex-direction:column;gap:.8rem;margin-bottom:2.4rem;">
+          <div style="display:flex;align-items:center;gap:.9rem;font-size:.82rem;color:rgba(255,255,255,.7);">
+            <span style="width:28px;height:28px;background:rgba(201,162,68,.12);border:1px solid rgba(201,162,68,.3);
+                         display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;">📍</span>
+            Localizações estratégicas de alto fluxo
+          </div>
+          <div style="display:flex;align-items:center;gap:.9rem;font-size:.82rem;color:rgba(255,255,255,.7);">
+            <span style="width:28px;height:28px;background:rgba(201,162,68,.12);border:1px solid rgba(201,162,68,.3);
+                         display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;">🖥️</span>
+            Telas LED de alta definição e brilho máximo
+          </div>
+          <div style="display:flex;align-items:center;gap:.9rem;font-size:.82rem;color:rgba(255,255,255,.7);">
+            <span style="width:28px;height:28px;background:rgba(201,162,68,.12);border:1px solid rgba(201,162,68,.3);
+                         display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;">🔄</span>
+            Conteúdo atualizável em tempo real
+          </div>
+          <div style="display:flex;align-items:center;gap:.9rem;font-size:.82rem;color:rgba(255,255,255,.7);">
+            <span style="width:28px;height:28px;background:rgba(201,162,68,.12);border:1px solid rgba(201,162,68,.3);
+                         display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;">📈</span>
+            Integrado à sua estratégia digital
+          </div>
+        </div>
+
+        <a href="https://impactotv.alastecno.com" target="_blank" rel="noopener"
+           style="display:inline-flex;align-items:center;gap:.7rem;
+                  font-family:var(--font-body);font-size:.78rem;font-weight:700;
+                  letter-spacing:.2em;text-transform:uppercase;
+                  color:var(--black);background:var(--gold);
+                  padding:1rem 2.2rem;text-decoration:none;position:relative;overflow:hidden;
+                  transition:transform .25s;"
+           onmouseover="this.style.transform='translateY(-3px)'"
+           onmouseout="this.style.transform='translateY(0)'">
+          <span>Conheça a Rede Impacto TV</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- RIGHT: decorative screen mockup -->
+      <div style="position:relative;display:flex;align-items:center;justify-content:center;">
+        <!-- outer glow ring -->
+        <div style="position:absolute;width:320px;height:320px;border-radius:50%;
+                    background:radial-gradient(circle,rgba(201,162,68,.12),transparent 70%);
+                    animation:screenPulse 3s ease-in-out infinite;"></div>
+
+        <!-- TV / screen frame -->
+        <div style="position:relative;width:100%;max-width:380px;">
+          <!-- screen bezel -->
+          <div style="background:linear-gradient(135deg,#1a1a1a,#0d0d0d);
+                      border:2px solid rgba(201,162,68,.3);
+                      border-radius:8px;
+                      padding:12px;
+                      box-shadow:0 0 60px rgba(201,162,68,.15),0 24px 60px rgba(0,0,0,.6);">
+            <!-- screen content -->
+            <div style="background:linear-gradient(135deg,#0a0a0a,#111);
+                        border-radius:4px;aspect-ratio:16/9;
+                        display:flex;flex-direction:column;align-items:center;justify-content:center;
+                        position:relative;overflow:hidden;border:1px solid rgba(201,162,68,.1);">
+              <!-- scan lines effect -->
+              <div style="position:absolute;inset:0;
+                background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.1) 2px,rgba(0,0,0,.1) 4px);
+                pointer-events:none;"></div>
+              <!-- animated gold glow on screen -->
+              <div style="position:absolute;inset:0;
+                background:radial-gradient(ellipse at 50% 40%,rgba(201,162,68,.15),transparent 65%);
+                animation:screenGlow 2.5s ease-in-out infinite alternate;"></div>
+
+              <!-- content -->
+              <div style="position:relative;z-index:1;text-align:center;padding:1.5rem;">
+                <div style="font-family:var(--font-title);font-size:1.4rem;font-weight:900;
+                            color:var(--gold);letter-spacing:.05em;margin-bottom:.3rem;">
+                  IMPACTO TV
+                </div>
+                <div style="font-size:.55rem;font-weight:600;letter-spacing:.35em;
+                            text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:1rem;">
+                  Mídia · Telas · DOOH
+                </div>
+                <div style="width:40px;height:1px;background:var(--gold);margin:.8rem auto;opacity:.5;"></div>
+                <div style="font-size:.6rem;color:rgba(255,255,255,.3);letter-spacing:.1em;">
+                  SUA MARCA AQUI
+                </div>
+                <!-- pulsing dot -->
+                <div style="width:8px;height:8px;background:var(--gold);border-radius:50%;
+                            margin:.8rem auto 0;
+                            animation:screenDot 1.5s ease-in-out infinite;
+                            box-shadow:0 0 12px var(--gold);"></div>
+              </div>
+            </div>
+            <!-- TV stand -->
+            <div style="height:8px;background:linear-gradient(#222,#111);border-radius:0 0 4px 4px;"></div>
+          </div>
+          <!-- stand neck -->
+          <div style="width:4px;height:22px;background:#1a1a1a;margin:0 auto;"></div>
+          <!-- stand base -->
+          <div style="width:80px;height:6px;background:linear-gradient(#1a1a1a,#111);border-radius:3px;margin:0 auto;"></div>
+        </div>
+
+        <!-- floating badges -->
+        <div style="position:absolute;top:10%;right:-5%;
+                    background:var(--dark2);border:1px solid rgba(201,162,68,.25);
+                    padding:.6rem 1rem;font-size:.65rem;font-weight:700;letter-spacing:.1em;
+                    color:var(--gold);white-space:nowrap;
+                    animation:floatBadge 3s ease-in-out infinite;">
+          🏆 Alto Impacto
+        </div>
+        <div style="position:absolute;bottom:15%;left:-5%;
+                    background:var(--dark2);border:1px solid rgba(201,162,68,.2);
+                    padding:.5rem .9rem;font-size:.6rem;font-weight:600;letter-spacing:.08em;
+                    color:rgba(255,255,255,.6);white-space:nowrap;
+                    animation:floatBadge 3s ease-in-out infinite .5s;">
+          📍 Pontos Estratégicos
+        </div>
+      </div>
+    </div>
+
+    <style>
+      @keyframes screenPulse {
+        0%,100% { transform:scale(1);opacity:.6; }
+        50%      { transform:scale(1.08);opacity:1; }
+      }
+      @keyframes screenGlow {
+        from { opacity:.6; }
+        to   { opacity:1; }
+      }
+      @keyframes screenDot {
+        0%,100% { opacity:1;transform:scale(1); }
+        50%      { opacity:.4;transform:scale(.7); }
+      }
+      @keyframes floatBadge {
+        0%,100% { transform:translateY(0); }
+        50%      { transform:translateY(-6px); }
+      }
+      @media (max-width:768px) {
+        #pantallas > div { grid-template-columns:1fr !important; gap:3rem !important; padding:4rem 1.5rem !important; }
+        #pantallas > div > div:last-child { display:none; }
+      }
+    </style>
+  </section>
+
+  <!-- ─── DIFERENCIAL ───────────────────────────────── -->
+  <section id="diferencial">
+    <div class="diferencial-bg"></div>
+    <div class="container">
+      <div class="diferencial-grid">
+        <!-- visual -->
+        <div class="diferencial-visual">
+          <div class="diff-card-stack">
+            <div class="diff-card">
+              <div class="diff-card-header">
+                <div class="diff-icon">📊</div>
+                <div class="diff-card-title">Tráfego Pago</div>
+              </div>
+              <div class="diff-bar-wrap">
+                <div class="diff-bar" style="--w: 88%"></div>
+              </div>
+              <div class="diff-bar-label"><span>ROI médio</span><strong>+88%</strong></div>
+            </div>
+            <div class="diff-card">
+              <div class="diff-card-header">
+                <div class="diff-icon">📺</div>
+                <div class="diff-card-title">Mídia Física (Telas)</div>
+              </div>
+              <div class="diff-bar-wrap">
+                <div class="diff-bar" style="--w: 74%"></div>
+              </div>
+              <div class="diff-bar-label"><span>Lembrança de marca</span><strong>+74%</strong></div>
+            </div>
+            <div class="diff-card">
+              <div class="diff-card-header">
+                <div class="diff-icon">🎯</div>
+                <div class="diff-card-title">Digital + Físico Integrado</div>
+              </div>
+              <div class="diff-bar-wrap">
+                <div class="diff-bar" style="--w: 96%"></div>
+              </div>
+              <div class="diff-bar-label"><span>Impacto combinado</span><strong>+96%</strong></div>
+            </div>
+          </div>
+        </div>
+        <!-- text -->
+        <div>
+          <div class="section-label">Nosso Diferencial</div>
+          <h2 class="section-title">Unimos estratégia, tráfego e <em>mídia própria.</em></h2>
+          <div class="gold-line"></div>
+          <p class="section-text">
+            Enquanto a maioria das empresas depende apenas de anúncios digitais, a LaVisualMk cria múltiplos pontos de contato com o cliente — aumentando a lembrança de marca e acelerando a decisão de compra.
+          </p>
+          <div class="quote-block">
+            <div class="quote-mark">"</div>
+            <div class="quote-text">
+              Seu negócio não precisa só <em>aparecer.</em><br>Precisa ser <em>lembrado.</em>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── RESULTADOS ────────────────────────────────── -->
+  <section id="resultados">
+    <div class="container">
+      <div style="max-width:600px; margin:0 auto; text-align:center;">
+        <div class="section-label" style="justify-content:center; display:block;">Resultados</div>
+        <h2 class="section-title" style="text-align:center;">Marketing que gera <em>impacto real</em></h2>
+        <div class="gold-line" style="margin:2rem auto;"></div>
+        <p class="section-text">
+          Ao integrar campanhas online com presença física em telas, criamos um efeito de repetição e reconhecimento que fortalece a marca e aumenta a conversão.
+        </p>
+      </div>
+
+      <div class="results-numbers">
+        <div class="result-cell">
+          <span class="result-num" data-count="360">0</span>
+          <span class="result-label">Visibilidade 360°</span>
+        </div>
+        <div class="result-cell" style="transition-delay:.15s">
+          <span class="result-num">+</span>
+          <span class="result-label">Mais presença. Mais lembrança.</span>
+        </div>
+        <div class="result-cell" style="transition-delay:.3s">
+          <span class="result-num">Digital<br>+ Físico</span>
+          <span class="result-label">Autoridade real</span>
+        </div>
+      </div>
+
+      <div class="microcopy-grid">
+        <div class="micro">"Sua marca precisa aparecer — e permanecer."</div>
+        <div class="micro">"Mais pontos de contato, mais vendas."</div>
+        <div class="micro">"Quem é visto, é lembrado. Quem é lembrado, vende."</div>
+        <div class="micro">"Digital + físico = autoridade real."</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CTA BAND ──────────────────────────────────── -->
+  <div id="cta-band">
+    <div class="container">
+      <h2 class="cta-title">Vamos posicionar sua marca de verdade?</h2>
+      <p class="cta-sub">Se você quer crescer com estratégia e presença forte — online e offline — fale com a gente.</p>
+      <a class="btn-dark" href="#contato" data-track="cta-solicitar-diagnostico">Solicitar diagnóstico gratuito</a>
+    </div>
+  </div>
+
+  <!-- ─── CONTATO ───────────────────────────────────── -->
+  <section id="contato">
+    <div class="container">
+      <div class="contato-grid">
+        <!-- info -->
+        <div>
+          <div class="section-label">Contato</div>
+          <h2 class="section-title">Fale com a <em>LaVisualMk</em></h2>
+          <div class="gold-line"></div>
+          <p class="section-text">
+            Pronto para transformar presença em vendas? Entre em contato e agende seu diagnóstico gratuito.
+          </p>
+          <div style="margin-top: 3rem;">
+            <div class="info-item">
+              <div class="info-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="info-label">Email</div>
+                <div class="info-value">lavisualmk@alastecno.com</div>
+              </div>
+            </div>
+            <div class="info-item" style="transition-delay:.1s">
+              <div class="info-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="info-label">WhatsApp</div>
+                <div class="info-value">+55 48 9 9198-1937</div>
+              </div>
+            </div>
+            <div class="info-item" style="transition-delay:.2s">
+              <div class="info-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="info-label">Localização</div>
+                <div class="info-value">Brasil · Argentina</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- form -->
+        <div class="contact-form-wrap">
+          <div class="form-group">
+            <label>Nome</label>
+            <input type="text" id="cf-nome" placeholder="Seu nome completo" />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="cf-email" placeholder="seu@email.com" />
+          </div>
+          <div class="form-group">
+            <label>Empresa</label>
+            <input type="text" id="cf-empresa" placeholder="Nome da sua empresa" />
+          </div>
+          <div class="form-group">
+            <label>Mensagem</label>
+            <textarea id="cf-mensagem" placeholder="Conte um pouco sobre seu negócio e como podemos ajudar..."></textarea>
+          </div>
+          <div id="cf-msg" style="display:none;margin-bottom:.8rem;font-size:.82rem;font-weight:600;color:var(--gold)"></div>
+          <button class="form-submit" id="cf-btn" onclick="submitContacto()" data-track="form-submit-diagnostico">Solicitar diagnóstico gratuito</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ────────────────────────────────────── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo" style="display:flex;align-items:center;gap:.6rem;">
+        <img src="lavisual.png" alt="LaVisualMk" width="80" height="32" loading="lazy" style="height:32px;width:auto;border-radius:4px;">
+        LaVisualMk
+      </div>
+      <div class="footer-copy">© 2025 LaVisualMk · Marketing & Estratégia · Todos os direitos reservados</div>
+      <div class="footer-links">
+        <a href="#sobre">Sobre</a>
+        <a href="#servicos">Serviços</a>
+        <a href="#contato">Contato</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ─── BOT WIDGET ──────────────────────────────────── -->
+  <!-- ── BOT LA VISUAL ─────────────────────────────────── -->
+  <style>
+    .bot-float {
+      position: fixed;
+      bottom: 2rem;
+      left: 2rem;
+      z-index: 9001;
+    }
+    .bot-bubble {
+      position: fixed;
+      bottom: calc(2rem + 58px + 10px);
+      left: 2rem;
+      z-index: 9001;
+      background: var(--dark2);
+      border: 1px solid rgba(201,162,68,.35);
+      color: var(--gold);
+      font-family: var(--font-body);
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .06em;
+      padding: 8px 14px;
+      white-space: nowrap;
+      transition: opacity .4s;
+      pointer-events: none;
+    }
+    .bot-btn {
+      width: 58px;
+      height: 58px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 24px rgba(201,162,68,.35);
+      cursor: none;
+      border: none;
+      transition: transform .3s, box-shadow .3s;
+      animation: waPulse 3s ease-in-out infinite;
+    }
+    .bot-btn:hover {
+      transform: scale(1.1) translateY(-3px);
+      box-shadow: 0 8px 30px rgba(201,162,68,.55);
+      animation: none;
+    }
+    .bot-btn svg { width: 26px; height: 26px; color: #020202; }
+    .bot-iframe-wrap {
+      position: fixed;
+      bottom: 6rem;
+      left: 2rem;
+      width: 380px;
+      height: 560px;
+      z-index: 9002;
+      border: 1px solid rgba(201,162,68,.25);
+      box-shadow: 0 16px 48px rgba(0,0,0,.6);
+      display: none;
+      overflow: hidden;
+    }
+    .bot-iframe-wrap.open { display: block; }
+    .bot-iframe-wrap iframe { width: 100%; height: 100%; border: none; }
+    @media (max-width: 480px) {
+      .bot-iframe-wrap {
+        left: 0; right: 0; bottom: 0;
+        width: 100%; height: 85vh;
+        border-left: none; border-right: none; border-bottom: none;
+      }
+    }
+  </style>
+
+  <div class="bot-float">
+    <div class="bot-bubble" id="botBubble">💬 Fale com nosso assistente</div>
+    <button class="bot-btn" id="botBtn" aria-label="Abrir chat">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="bot-iframe-wrap" id="botIframe">
+    <iframe id="chatFrame" src="" title="LaVisualMk · Assistente"></iframe>
+  </div>
+
+  <!-- ─── WHATSAPP FLOAT ───────────────────────────────── -->
+  <a class="wa-float" href="https://wa.me/554891981937?text=Olá%2C%20gostaria%20de%20solicitar%20um%20diagnóstico%20gratuito%20da%20La%20Visual." target="_blank" rel="noopener" aria-label="Fale pelo WhatsApp" data-track="wa-flotante">
+    <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+    <span class="wa-tooltip">Fale pelo WhatsApp</span>
+  </a>
+
+  <!-- ─── SCRIPTS ───────────────────────────────────── -->
+  <script>
+    /* ── CURSOR ── */
+    const cursor     = document.getElementById('cursor');
+    const cursorRing = document.getElementById('cursorRing');
+    let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+    document.addEventListener('mousemove', e => {
+      mouseX = e.clientX; mouseY = e.clientY;
+      // transform en lugar de left/top → sin forced-reflow
+      cursor.style.transform = `translate(calc(${mouseX}px - 50%), calc(${mouseY}px - 50%))`;
+    }, { passive: true });
+    (function animateRing() {
+      ringX += (mouseX - ringX) * .12;
+      ringY += (mouseY - ringY) * .12;
+      cursorRing.style.transform = `translate(calc(${ringX}px - 50%), calc(${ringY}px - 50%))`;
+      requestAnimationFrame(animateRing);
+    })();
+    document.querySelectorAll('a, button, .service-card, .micro').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.width  = '20px';
+        cursor.style.height = '20px';
+        cursorRing.style.width  = '54px';
+        cursorRing.style.height = '54px';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.width  = '10px';
+        cursor.style.height = '10px';
+        cursorRing.style.width  = '36px';
+        cursorRing.style.height = '36px';
+      });
+    });
+
+    /* ── SCROLL PROGRESS + NAV (combinados, passive) ── */
+    const navbar   = document.getElementById('navbar');
+    const progBar  = document.getElementById('progress-bar');
+    window.addEventListener('scroll', () => {
+      const el  = document.documentElement;
+      const pct = (el.scrollTop / (el.scrollHeight - el.clientHeight)) * 100;
+      progBar.style.width = pct + '%';
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    /* ── INTERSECTION OBSERVER ── */
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          /* animate count-up numbers */
+          const num = entry.target.querySelector('[data-count]');
+          if (num) animateCount(num);
+          /* animate diff bars */
+          entry.target.querySelectorAll('.diff-bar').forEach(b => b.classList.add('animate'));
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll(
+      '.section-label, .section-title, .section-text, .gold-line, ' +
+      '.sobre-visual, .stat-item, .service-card, .fade-up-item, ' +
+      '.result-cell, .micro, .contact-form-wrap, .info-item, ' +
+      '.diferencial-visual'
+    ).forEach(el => io.observe(el));
+
+    /* bars trigger when parent is visible */
+    const barIo = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.querySelectorAll('.diff-bar').forEach(b => b.classList.add('animate'));
+        }
+      });
+    }, { threshold: 0.3 });
+    document.querySelectorAll('.diff-card-stack').forEach(el => barIo.observe(el));
+
+    /* ── COUNT-UP ── */
+    function animateCount(el) {
+      const target = +el.dataset.count;
+      const dur = 1800;
+      const start = performance.now();
+      const step = ts => {
+        const p = Math.min((ts - start) / dur, 1);
+        el.textContent = Math.round(p * target) + (p < 1 ? '' : '°');
+        if (p < 1) requestAnimationFrame(step);
+        else el.textContent = target + '°';
+      };
+      requestAnimationFrame(step);
+    }
+
+    /* ── SMOOTH NAV ── */
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const t = document.querySelector(a.getAttribute('href'));
+        if (t) t.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+
+  <!-- ── HAMBURGER SCRIPT ──────────────────────────────── -->
+  <script>
+    (function () {
+      const hamburger = document.getElementById('hamburger');
+      const mobileNav = document.getElementById('mobileNav');
+      let isOpen = false;
+
+      function toggleMenu(force) {
+        isOpen = (force !== undefined) ? force : !isOpen;
+        hamburger.classList.toggle('open', isOpen);
+        mobileNav.style.display = isOpen ? 'flex' : '';
+        // pequeño delay para que el display:flex tome efecto antes de la transición
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            mobileNav.classList.toggle('open', isOpen);
+          });
+        });
+        hamburger.setAttribute('aria-expanded', isOpen);
+        mobileNav.setAttribute('aria-hidden', !isOpen);
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+      }
+
+      hamburger.addEventListener('click', () => toggleMenu());
+
+      // Cerrar al hacer click en cualquier link del menú
+      mobileNav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => toggleMenu(false));
+      });
+
+      // Cerrar con Escape
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && isOpen) toggleMenu(false);
+      });
+    })();
+  </script>
+
+  <!-- ── BOT SCRIPT ─────────────────────────────────────── -->
+  <script>
+    (function () {
+      const btn    = document.getElementById('botBtn');
+      const bubble = document.getElementById('botBubble');
+      const wrap   = document.getElementById('botIframe');
+      const frame  = document.getElementById('chatFrame');
+      const CHAT_URL = 'https://bot-soporte-alasexpress.onrender.com/chat?context=lavisual&lang=pt';
+      let isOpen = false;
+      let loaded = false;
+
+      // Ocultar bubble después de 5 seg
+      setTimeout(() => {
+        if (bubble) { bubble.style.opacity = '0'; }
+        setTimeout(() => { if (bubble) bubble.remove(); }, 400);
+      }, 5000);
+
+      btn.addEventListener('click', () => {
+        isOpen = !isOpen;
+        wrap.classList.toggle('open', isOpen);
+        if (isOpen && !loaded) {
+          frame.src = CHAT_URL;
+          loaded = true;
+        }
+      });
+
+      // Cerrar al hacer click fuera
+      document.addEventListener('click', (e) => {
+        if (isOpen && !wrap.contains(e.target) && !btn.contains(e.target)) {
+          isOpen = false;
+          wrap.classList.remove('open');
+        }
+      });
+    })();
+  </script>
+
+  <!-- ─── POPUP LEAD CAPTURE ─────────────────────────── -->
+  <style>
+    /* POPUP OVERLAY */
+    #lead-overlay {
+      position: fixed; inset: 0;
+      background: rgba(2,2,2,.75);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 9900;
+      display: flex; align-items: center; justify-content: center;
+      padding: 1.5rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity .35s ease;
+    }
+    #lead-overlay.open { opacity: 1; pointer-events: all; }
+
+    .lead-modal {
+      background: var(--dark2);
+      border: 1px solid rgba(201,162,68,.25);
+      max-width: 480px; width: 100%;
+      position: relative;
+      transform: translateY(24px) scale(.97);
+      transition: transform .4s cubic-bezier(.34,1.2,.64,1);
+      box-shadow: 0 32px 80px rgba(0,0,0,.7);
+    }
+    #lead-overlay.open .lead-modal {
+      transform: translateY(0) scale(1);
+    }
+    .lead-modal-top {
+      background: linear-gradient(135deg, rgba(201,162,68,.18), rgba(201,162,68,.04));
+      border-bottom: 1px solid rgba(201,162,68,.2);
+      padding: 2rem 2.2rem 1.8rem;
+      position: relative; overflow: hidden;
+    }
+    .lead-modal-top::before {
+      content: '';
+      position: absolute; top: -40px; right: -40px;
+      width: 140px; height: 140px;
+      background: radial-gradient(circle, rgba(201,162,68,.2), transparent 70%);
+      border-radius: 50%;
+    }
+    .lead-badge {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: .6rem; font-weight: 700;
+      letter-spacing: .3em; text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(201,162,68,.4);
+      padding: .3rem 1rem;
+      margin-bottom: 1rem;
+    }
+    .lead-title {
+      font-family: var(--font-title);
+      font-size: clamp(1.3rem, 4vw, 1.7rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: .6rem;
+    }
+    .lead-title em { color: var(--gold); font-style: normal; }
+    .lead-sub {
+      font-size: .85rem; font-weight: 300;
+      color: rgba(255,255,255,.55);
+      line-height: 1.6;
+    }
+    .lead-modal-body { padding: 1.8rem 2.2rem 2rem; }
+    .lead-field { margin-bottom: 1rem; }
+    .lead-field label {
+      display: block;
+      font-size: .68rem; font-weight: 700;
+      letter-spacing: .15em; text-transform: uppercase;
+      color: rgba(255,255,255,.45);
+      margin-bottom: .4rem;
+    }
+    .lead-field input {
+      width: 100%; padding: .8rem 1rem;
+      background: rgba(255,255,255,.04);
+      border: 1.5px solid rgba(255,255,255,.1);
+      color: var(--white);
+      font-family: var(--font-body); font-size: .95rem;
+      outline: none;
+      transition: border-color .2s, background .2s;
+    }
+    .lead-field input::placeholder { color: rgba(255,255,255,.25); }
+    .lead-field input:focus {
+      border-color: var(--gold);
+      background: rgba(201,162,68,.05);
+    }
+    .lead-submit {
+      width: 100%; padding: 1rem;
+      background: var(--gold);
+      color: var(--black);
+      font-family: var(--font-body);
+      font-size: .82rem; font-weight: 700;
+      letter-spacing: .18em; text-transform: uppercase;
+      border: none; cursor: pointer;
+      margin-top: .4rem;
+      transition: background .25s, transform .2s;
+      position: relative; overflow: hidden;
+    }
+    .lead-submit::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--gold2);
+      transform: translateX(-101%);
+      transition: transform .3s ease;
+    }
+    .lead-submit:hover { transform: translateY(-1px); }
+    .lead-submit:hover::before { transform: translateX(0); }
+    .lead-submit span { position: relative; z-index: 1; }
+    .lead-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+    .lead-perks {
+      display: flex; gap: 1.2rem; flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+    .lead-perk {
+      font-size: .72rem; color: rgba(255,255,255,.35);
+      display: flex; align-items: center; gap: .3rem;
+    }
+    .lead-perk::before { content: '✓'; color: var(--gold); font-weight: 700; }
+    .lead-success {
+      text-align: center; padding: 2.5rem 2rem;
+      display: none;
+    }
+    .lead-success-icon {
+      width: 60px; height: 60px;
+      background: rgba(201,162,68,.15);
+      border: 1px solid rgba(201,162,68,.4);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem;
+      margin: 0 auto 1.2rem;
+    }
+    .lead-success h3 {
+      font-family: var(--font-title);
+      font-size: 1.3rem;
+      color: var(--gold);
+      margin-bottom: .5rem;
+    }
+    .lead-success p {
+      font-size: .85rem;
+      color: rgba(255,255,255,.5);
+      line-height: 1.6;
+    }
+    .lead-close {
+      position: absolute; top: 1rem; right: 1rem;
+      width: 32px; height: 32px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      color: rgba(255,255,255,.4);
+      font-size: 1rem; line-height: 1;
+      transition: background .2s, color .2s;
+      z-index: 2;
+    }
+    .lead-close:hover { background: rgba(255,255,255,.12); color: var(--white); }
+    .lead-msg-err {
+      font-size: .78rem; color: #e74c3c;
+      margin-top: .4rem; display: none;
+    }
+    .lead-msg-err.show { display: block; }
+  </style>
+
+  <!-- POPUP HTML — oferta 50% off branding -->
+  <div id="lead-overlay" role="dialog" aria-modal="true" aria-label="50% off Branding">
+    <div class="lead-modal">
+      <button class="lead-close" id="lead-close-btn" aria-label="Fechar">✕</button>
+
+      <!-- ── Pantalla principal del form ── -->
+      <div id="lead-form-area">
+        <div class="lead-modal-top">
+          <div class="lead-offer-badge">🏷 OFERTA EXCLUSIVA · TEMPO LIMITADO</div>
+          <div class="lead-title"><em>50% OFF</em> no<br>seu Branding</div>
+          <p class="lead-sub">Deixe seu nome e e-mail agora e enviamos seu código de desconto pessoal para o nosso serviço de Branding.</p>
+          <div class="lead-urgency">
+            <span class="urgency-dot"></span>
+            <span>Desconto válido por tempo limitado</span>
+          </div>
+        </div>
+        <div class="lead-modal-body">
+          <button class="lead-submit" id="lp-btn" onclick="submitLead()" data-track="lead-popup-submit">
+            <span id="lp-btn-text">Quero meu 50% OFF →</span>
+          </button>
+          <div class="lead-perks">
+            <span class="lead-perk">Sem spam</span>
+            <span class="lead-perk">Código exclusivo</span>
+            <span class="lead-perk">Sem compromissos</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Pantalla de éxito con código ── -->
+      <div class="lead-success" id="lead-success">
+        <div class="lead-success-icon">🎉</div>
+        <h3>Seu desconto está pronto!</h3>
+        <p style="margin-bottom:1.2rem">Seu desconto está registrado. Ao nos contatar, mencione seu e-mail e aplicamos automaticamente:</p>
+        <div class="discount-code-box">
+          <div class="discount-code" id="discount-display" style="font-size:1.2rem;letter-spacing:.05em">—</div>
+          <div class="discount-label">Válido · Branding LaVisualMk</div>
+        </div>
+        <p style="margin-top:1rem;font-size:.78rem;color:rgba(255,255,255,.35)">
+          Entraremos em contato em breve!
+        </p>
+      </div>
+
+      <!-- ── Segundo intento al cerrar ── -->
+      <div class="lead-confirm-close" id="lead-confirm-close">
+        <div class="confirm-icon">⚠️</div>
+        <div class="confirm-title">Tem certeza que quer sair?</div>
+        <p class="confirm-sub">Você vai perder seu código de <strong style="color:var(--gold)">50% OFF</strong> em Branding. Esta oferta nem sempre está disponível.</p>
+        <div class="confirm-btns">
+          <button class="confirm-btn-stay" onclick="stayOnPopup()">Ficar e aproveitar!</button>
+          <button class="confirm-btn-leave" onclick="confirmClose()">Não, obrigado</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── SUPABASE + POPUP + CONTACT FORM JS ─────────── -->
+  <!-- Config + Supabase + captura de leads (sin claves sensibles en el navegador) -->
+  <script src="config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="lead-capture.js"></script>
+
+  <!-- ─── VIDEO LIGHTBOX JS ─────────────────────────── -->
+  <script>
+  (function() {
+    const lightbox    = document.getElementById('video-lightbox');
+    const lightboxVid = document.getElementById('lightbox-video');
+    const heroWrap    = document.getElementById('hero-video-wrap');
+
+    function isMobile() { return window.innerWidth <= 500; }
+
+    window.openVideoLightbox = function() {
+      if (!isMobile()) return; // desktop: el video ya se reproduce inline
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      lightboxVid.currentTime = 0;
+      lightboxVid.play();
+    };
+
+    window.closeVideoLightbox = function() {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+      lightboxVid.pause();
+      lightboxVid.currentTime = 0;
+    };
+
+    window.handleLightboxClick = function(e) {
+      if (e.target === lightbox) closeVideoLightbox();
+    };
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && lightbox.classList.contains('open')) {
+        closeVideoLightbox();
+      }
+    });
+
+    // En desktop restaurar cursor normal sobre el video
+    if (!isMobile()) {
+      heroWrap.style.cursor = 'default';
+    }
+  })();
+  </script>
+
+</body>
+</html>
