@@ -13,6 +13,10 @@ import { loadArchivosHost } from "./archivos-host.js";
 // traiga marca/web/logo/brief solo, sin tener que elegirlo de nuevo.
 function goToCrearApp(){
   const base = 'https://crear-publicaciones.onrender.com/';
+  const url = (selectedClientId && selectedClientId !== 'all')
+    ? `${base}?client_id=${encodeURIComponent(selectedClientId)}`
+    : base;
+  window.open(url, '_blank');
 }
 // Ya no filtra "todos vs. uno": loadClients() ahora solo trae y renderiza
 // al cliente elegido en el selector, así que esto solo asegura que las
