@@ -2,5 +2,8 @@ User-agent: *
 Allow: /
 Disallow: /formulario-clientes.html
 Disallow: /admin/
-
+Disallow: /publicar
+Disallow: /cliente
+Disallow: /r
+Disallow: /Documentos
 Sitemap: https://lavisualmk.alastecno.com/sitemap.xml
