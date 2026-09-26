@@ -139,6 +139,14 @@ async function loadClients(){
     // tapaban lo que faltaba revisar). Una vez que la agencia decide,
     // el item sale de esta consulta para siempre.
     const { data: planItems } = await sb.from('socialbot_content_plan_items').select('*').eq('client_id', c.id).eq('status', 'proposed').order('target_date', { ascending:true });
+    // El Calendario es la vista panorámica de la semana (a diferencia de la
+    // Lista, que es solo lo accionable): además de lo pendiente, trae lo
+    // ya aprobado para esa misma semana, para que se vea de un vistazo qué
+    // días ya están resueltos y cuáles siguen esperando aprobación. No se
+    // reincorpora 'rejected' acá porque eso no se va a publicar, no
+    // corresponde en un calendario de lo que va a salir.
+    const { data: calendarApprovedItems } = await sb.from('socialbot_content_plan_items').select('*').eq('client_id', c.id).eq('status', 'approved').order('target_date', { ascending:true });
+    const calendarItems = [...(planItems||[]), ...(calendarApprovedItems||[])];
     // Historial: los ya decididos (aprobados/rechazados), de solo lectura,
     // para cuando la agencia quiere volver a ver que se publicó o por qué
     // se rechazó algo. Separado de la consulta de arriba a propósito --
@@ -287,7 +295,7 @@ async function loadClients(){
       : '';
 
     // ── Pestaña "Plan" ────────────────────────────────────────────────
-    const planItemsSectionHtml = ((planItems||[]).length || (planHistoryItems||[]).length) ? `
+    const planItemsSectionHtml = ((planItems||[]).length || (planHistoryItems||[]).length || calendarItems.length) ? `
         <div class="meta-row" style="margin-bottom:8px;">
           POST DE PUBLICACION (texto que va debajo del video, junto con los hashtags), generado automáticamente todos los lunes con base en métricas de posts, leads recientes y lo ya publicado. Editá el texto si hace falta y aprobá/rechaza o edita cada uno — el que quede aprobado se publica solo el día sugerido, con este texto y ese Hashtag. Una vez que decidís, el post sale de esta lista (podés volver a verlo en Historial).
         </div>
@@ -297,7 +305,7 @@ async function loadClients(){
           <button data-mode="history" class="${planViewMode[c.id]==='history'?'active':''}" onclick="setPlanView('${c.id}','history')">🕘 Historial${(planHistoryItems||[]).length ? ` (${planHistoryItems.length})` : ''}</button>
         </div>
         <div id="planCalView-${c.id}" style="display:${planViewMode[c.id]==='calendar'?'block':'none'};">
-          ${buildPlanCalendarHtml(planItems)}
+          ${buildPlanCalendarHtml(calendarItems)}
         </div>
         <div id="planHistView-${c.id}" style="display:${planViewMode[c.id]==='history'?'block':'none'};">
           ${buildPlanHistoryHtml(planHistoryItems)}
@@ -324,7 +332,7 @@ async function loadClients(){
         </div>
       ` : '';
 
-    if((planItems||[]).length || (planHistoryItems||[]).length || hookRankingHtml){
+    if((planItems||[]).length || (planHistoryItems||[]).length || calendarItems.length || hookRankingHtml){
       const planDiv = document.createElement('div');
       planDiv.className = 'card client-card';
       planDiv.dataset.clientId = c.id;
