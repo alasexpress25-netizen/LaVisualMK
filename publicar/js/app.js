@@ -12,7 +12,7 @@ import { applyClientFilter } from "./ui-chrome.js";
 import { updateArchivosHostStorageBadge } from "./archivos-host.js";
 import { renderHomeView, renderMetrics } from "./metrics.js";
 import { loadClientHealth } from "./client-health.js";
-import { buildPlanCalendarHtml } from "./content-plan.js";
+import { buildPlanCalendarHtml, buildPlanHistoryHtml } from "./content-plan.js";
 import { renderPostsList } from "./posts.js";
 // Los siguientes imports son por efecto lateral: cada uno de estos
 // archivos termina con window.funcion = funcion para exponer sus
@@ -139,6 +139,11 @@ async function loadClients(){
     // tapaban lo que faltaba revisar). Una vez que la agencia decide,
     // el item sale de esta consulta para siempre.
     const { data: planItems } = await sb.from('socialbot_content_plan_items').select('*').eq('client_id', c.id).eq('status', 'proposed').order('target_date', { ascending:true });
+    // Historial: los ya decididos (aprobados/rechazados), de solo lectura,
+    // para cuando la agencia quiere volver a ver que se publicó o por qué
+    // se rechazó algo. Separado de la consulta de arriba a propósito --
+    // esa es la única que "molesta" en la vista semanal.
+    const { data: planHistoryItems } = await sb.from('socialbot_content_plan_items').select('*').eq('client_id', c.id).in('status', ['approved','rejected']).order('reviewed_at', { ascending:false }).limit(30);
     const { data: reviews } = await sb.from('socialbot_reviews').select('*').eq('client_id', c.id).order('review_created_at', { ascending:false }).limit(20);
 
     const ai = (aiRows && aiRows[0]) || {};
@@ -282,19 +287,23 @@ async function loadClients(){
       : '';
 
     // ── Pestaña "Plan" ────────────────────────────────────────────────
-    const planItemsSectionHtml = (planItems||[]).length ? `
+    const planItemsSectionHtml = ((planItems||[]).length || (planHistoryItems||[]).length) ? `
         <div class="meta-row" style="margin-bottom:8px;">
-          POST DE PUBLICACION (texto que va debajo del video, junto con los hashtags), generado automáticamente todos los lunes con base en métricas de posts, leads recientes y lo ya publicado. Editá el texto si hace falta y aprobá/rechaza o edita cada uno — el que quede aprobado se publica solo el día sugerido, con este texto y ese Hashtag. Una vez que decidís, el post sale de esta lista.
+          POST DE PUBLICACION (texto que va debajo del video, junto con los hashtags), generado automáticamente todos los lunes con base en métricas de posts, leads recientes y lo ya publicado. Editá el texto si hace falta y aprobá/rechaza o edita cada uno — el que quede aprobado se publica solo el día sugerido, con este texto y ese Hashtag. Una vez que decidís, el post sale de esta lista (podés volver a verlo en Historial).
         </div>
         <div class="plan-view-toggle" data-plan-toggle="${c.id}">
           <button data-mode="list" class="${(planViewMode[c.id]||'list')==='list'?'active':''}" onclick="setPlanView('${c.id}','list')">📋 Lista</button>
           <button data-mode="calendar" class="${planViewMode[c.id]==='calendar'?'active':''}" onclick="setPlanView('${c.id}','calendar')">📅 Calendario</button>
+          <button data-mode="history" class="${planViewMode[c.id]==='history'?'active':''}" onclick="setPlanView('${c.id}','history')">🕘 Historial${(planHistoryItems||[]).length ? ` (${planHistoryItems.length})` : ''}</button>
         </div>
         <div id="planCalView-${c.id}" style="display:${planViewMode[c.id]==='calendar'?'block':'none'};">
           ${buildPlanCalendarHtml(planItems)}
         </div>
+        <div id="planHistView-${c.id}" style="display:${planViewMode[c.id]==='history'?'block':'none'};">
+          ${buildPlanHistoryHtml(planHistoryItems)}
+        </div>
         <div id="planListView-${c.id}" style="display:${(planViewMode[c.id]||'list')==='list'?'block':'none'};">
-        ${planItems.map(item => `
+        ${!(planItems||[]).length ? '<div class="meta-row" style="margin-top:8px;">No hay posts esperando aprobación esta semana. Los ya decididos están en Historial.</div>' : planItems.map(item => `
           <div class="card pending" style="margin-top:8px;">
             <div class="meta-row" style="margin-bottom:6px;">
               <strong>${new Date(item.target_date + 'T00:00:00').toLocaleDateString('es-AR', { weekday:'long', day:'numeric', month:'short' })}</strong>
@@ -315,7 +324,7 @@ async function loadClients(){
         </div>
       ` : '';
 
-    if((planItems||[]).length || hookRankingHtml){
+    if((planItems||[]).length || (planHistoryItems||[]).length || hookRankingHtml){
       const planDiv = document.createElement('div');
       planDiv.className = 'card client-card';
       planDiv.dataset.clientId = c.id;

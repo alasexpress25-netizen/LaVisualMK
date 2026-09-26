@@ -6,16 +6,40 @@
 
 import { planViewMode, sb } from "./state.js";
 import { loadClients } from "./app.js";
+import { hashtagsToArray } from "./hashtags.js";
 
 function setPlanView(clientId, mode){
   planViewMode[clientId] = mode;
   const listEl = document.getElementById(`planListView-${clientId}`);
   const calEl = document.getElementById(`planCalView-${clientId}`);
+  const histEl = document.getElementById(`planHistView-${clientId}`);
   if(listEl) listEl.style.display = mode === 'list' ? 'block' : 'none';
   if(calEl) calEl.style.display = mode === 'calendar' ? 'block' : 'none';
+  if(histEl) histEl.style.display = mode === 'history' ? 'block' : 'none';
   document.querySelectorAll(`[data-plan-toggle="${clientId}"] button`).forEach(b => {
     b.classList.toggle('active', b.dataset.mode === mode);
   });
+}
+// Historial de items ya decididos (aprobados/rechazados) para el plan
+// semanal: de solo lectura, sin botones de accion -- si la agencia se
+// arrepiente de un rechazo, edita/reactiva el item directo en Supabase,
+// esto es solo para consultar que paso.
+function buildPlanHistoryHtml(historyItems){
+  if(!(historyItems||[]).length){
+    return '<div class="meta-row" style="margin-top:8px;">Todavía no hay posts aprobados ni rechazados para este cliente.</div>';
+  }
+  return historyItems.map(item => `
+    <div class="card" style="margin-top:8px; opacity:0.85;">
+      <div class="meta-row" style="margin-bottom:6px;">
+        <strong>${new Date(item.target_date + 'T00:00:00').toLocaleDateString('es-AR', { weekday:'long', day:'numeric', month:'short' })}</strong>
+        ${item.angle ? ` · <span class="pill">${item.angle}</span>` : ''}
+        · <span class="pill ${item.status === 'approved' ? '' : 'off'}">${item.status === 'approved' ? '✅ aprobado' : '❌ rechazado'}</span>
+        ${item.reviewed_at ? ` <span style="font-size:11px; color:var(--muted);">· decidido el ${new Date(item.reviewed_at).toLocaleDateString('es-AR')}</span>` : ''}
+      </div>
+      <div class="meta-row" style="white-space:pre-wrap;">${(item.caption||'sin texto').replace(/</g,'&lt;')}</div>
+      ${hashtagsToArray(item.hashtags).length ? `<div class="hashtag-row" style="margin-top:6px;">${hashtagsToArray(item.hashtags).map(t => `<span class="hashtag-chip" style="padding:3px 12px;">${t}</span>`).join('')}</div>` : ''}
+    </div>
+  `).join('');
 }
 // Arma una grilla lunes-a-domingo con los items del plan ubicados en su
 // dia (target_date). Es un resumen visual, de solo lectura -- para editar
@@ -65,7 +89,7 @@ async function reviewContentPlanItem(itemId, status){
   loadClients();
 }
 
-export { buildPlanCalendarHtml, reviewContentPlanItem, saveContentPlanItem, setPlanView };
+export { buildPlanCalendarHtml, buildPlanHistoryHtml, reviewContentPlanItem, saveContentPlanItem, setPlanView };
 
 // Exposicion a window: estas funciones se llaman desde atributos
 // onclick="..." embebidos en HTML generado dinamicamente (renderPostsList,
