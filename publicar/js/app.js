@@ -209,7 +209,21 @@ async function loadClients(){
         </div>
       </div>
       <div class="meta-row">Link de venta: ${c.sales_link || '—'}</div>
-      <div class="meta-row">Cuentas conectadas: ${(accounts||[]).map(a => `${a.platform} (${a.page_name||a.page_id})`).join(', ') || 'ninguna aún'}</div>
+      <div class="meta-row">Cuentas conectadas:${(accounts||[]).length ? '' : ' ninguna aún'}</div>
+      ${(accounts||[]).map(a => {
+        const isActive = a.active !== false;
+        const label = `${a.platform === 'instagram' ? 'Instagram' : 'Facebook'} (${a.page_name||a.page_id})`;
+        const safeLabel = label.replace(/'/g, "\\'");
+        return `
+        <div class="account-row">
+          <span class="account-row-name">${a.platform === 'instagram' ? '📸' : '📘'} ${label.replace(/</g,'&lt;')}</span>
+          <span class="pill ${isActive ? '' : 'off'}">${isActive ? 'activa' : 'pausada'}</span>
+          <div class="account-row-actions">
+            <button type="button" class="secondary" onclick="toggleAccountActive('${a.id}', ${isActive}, '${safeLabel}')">${isActive ? 'Pausar cuenta' : 'Reactivar cuenta'}</button>
+            <button type="button" class="reject" onclick="deleteSocialAccount('${a.id}', '${safeLabel}')">Borrar cuenta</button>
+          </div>
+        </div>`;
+      }).join('')}
       <div class="meta-row">Acceso del cliente: ${c.client_email || 'sin asignar'} ${c.client_user_id ? '<span class="pill">ya entró</span>' : (c.client_email ? '<span class="pill off">pendiente</span>' : '')}</div>
 
       ${(pendingPosts||[]).length ? `

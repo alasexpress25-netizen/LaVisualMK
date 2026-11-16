@@ -284,6 +284,31 @@ async function saveClientPortalAccess(e, clientId){
   
   loadClients();
 }
+// ---------------------------------------------------------------------------
+// Pausar / borrar UNA cuenta (Facebook o Instagram) de un cliente.
+// Pausar usa la columna socialbot_social_accounts.active (ver
+// supabase/0099_social_accounts_active.sql). Ojo: el scheduler y las
+// funciones de publicacion tienen que filtrar por active = true para que
+// la pausa tenga efecto real al publicar.
+// ---------------------------------------------------------------------------
+async function toggleAccountActive(accountId, current, label){
+  const msg = current
+    ? `¿Pausar ${label}?\n\nMientras esté pausada, esta cuenta no debería recibir publicaciones nuevas. El cliente y sus otras cuentas siguen igual.\n\nPodés reactivarla cuando quieras.`
+    : `¿Reactivar ${label}?\n\nVuelve a recibir publicaciones.`;
+  if(!confirm(msg)) return;
+  const { error } = await sb.from('socialbot_social_accounts').update({ active: !current }).eq('id', accountId);
+  if(error){
+    alert(`No se pudo cambiar el estado: ${error.message}\n\nSi dice que la columna "active" no existe, hay que correr primero el SQL 0099_social_accounts_active.sql en Supabase.`);
+    return;
+  }
+  loadClients();
+}
+async function deleteSocialAccount(accountId, label){
+  if(!confirm(`¿BORRAR ${label}?\n\n• Se elimina la conexión y su token.\n• También se BORRAN los posts de esta cuenta (historial, programados y pendientes) y sus métricas/seguidores guardados. No se puede deshacer.\n• Para volver a publicar ahí hay que conectarla de nuevo.\n\nSi solo querés frenar las publicaciones por un tiempo, usá "Pausar cuenta".`)) return;
+  const { error } = await sb.from('socialbot_social_accounts').delete().eq('id', accountId);
+  if(error){ alert(`No se pudo borrar: ${error.message}`); return; }
+  loadClients();
+}
 // Edita una cuenta ya conectada (UPDATE por id). Crear cuentas nuevas se
 // hace únicamente desde el modal "Nuevo cliente" (createClient), para que
 // cada sección tenga un solo trabajo: esta solo edita lo que ya existe.
@@ -304,7 +329,7 @@ async function saveAccount(e, accountId){
   loadClients();
 }
 
-export { buildCameraScriptTemplate, closeCameraScriptModal, closeDeleteClientModal, closeEditClientModal, closeNewClientModal, confirmDeleteClient, copyCameraScript, createClient, fillEditAccountFields, onClientSelectorChange, onEditClientPlatformChange, openCameraScriptModal, openDeleteClientModal, openEditClientModal, openNewClientModal, saveAccount, saveClientEdit, saveClientPortalAccess, toggleActive };
+export { buildCameraScriptTemplate, closeCameraScriptModal, closeDeleteClientModal, closeEditClientModal, closeNewClientModal, confirmDeleteClient, copyCameraScript, createClient, fillEditAccountFields, onClientSelectorChange, onEditClientPlatformChange, openCameraScriptModal, openDeleteClientModal, openEditClientModal, openNewClientModal, saveAccount, saveClientEdit, saveClientPortalAccess, toggleActive, toggleAccountActive, deleteSocialAccount };
 
 // Exposicion a window: estas funciones se llaman desde atributos
 // onclick="..." embebidos en HTML generado dinamicamente (renderPostsList,
@@ -326,3 +351,5 @@ window.openNewClientModal = openNewClientModal;
 window.saveClientEdit = saveClientEdit;
 window.saveClientPortalAccess = saveClientPortalAccess;
 window.toggleActive = toggleActive;
+window.toggleAccountActive = toggleAccountActive;
+window.deleteSocialAccount = deleteSocialAccount;
