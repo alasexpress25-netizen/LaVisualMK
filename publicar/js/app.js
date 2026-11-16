@@ -311,9 +311,19 @@ async function loadClients(){
           ${buildPlanHistoryHtml(planHistoryItems)}
         </div>
         <div id="planListView-${c.id}" style="display:${(planViewMode[c.id]||'list')==='list'?'block':'none'};">
+        ${(planItems||[]).length ? `
+          <div class="plan-bulk-bar">
+            <label class="plan-bulk-all"><input type="checkbox" id="planSelectAll-${c.id}" onchange="togglePlanSelectAll('${c.id}', this.checked)"> Seleccionar todas</label>
+            <span class="plan-bulk-count" id="planSelCount-${c.id}">Ninguna seleccionada</span>
+            <div class="plan-bulk-actions">
+              <button type="button" id="planBulkApprove-${c.id}" disabled onclick="bulkReviewContentPlanItems('${c.id}', 'approved')">✅ Aprobar seleccionadas</button>
+              <button type="button" class="reject" id="planBulkReject-${c.id}" disabled onclick="bulkReviewContentPlanItems('${c.id}', 'rejected')">❌ Rechazar seleccionadas</button>
+            </div>
+          </div>` : ''}
         ${!(planItems||[]).length ? '<div class="meta-row" style="margin-top:8px;">No hay posts esperando aprobación esta semana. Los ya decididos están en Historial.</div>' : planItems.map(item => `
           <div class="card pending" style="margin-top:8px;">
-            <div class="meta-row" style="margin-bottom:6px;">
+            <div class="meta-row plan-card-head" style="margin-bottom:6px;">
+              <input type="checkbox" class="plan-select" data-client="${c.id}" data-item-id="${item.id}" aria-label="Seleccionar este post" onchange="updatePlanBulkBar('${c.id}')">
               <strong>${new Date(item.target_date + 'T00:00:00').toLocaleDateString('es-AR', { weekday:'long', day:'numeric', month:'short' })}</strong>
               ${item.angle ? ` · <span class="pill">${item.angle}</span>` : ''}
             </div>

@@ -89,7 +89,60 @@ async function reviewContentPlanItem(itemId, status){
   loadClients();
 }
 
-export { buildPlanCalendarHtml, buildPlanHistoryHtml, reviewContentPlanItem, saveContentPlanItem, setPlanView };
+// ---------------------------------------------------------------------------
+// Acciones masivas: casilla por card + "seleccionar todas" + aprobar/rechazar
+// las seleccionadas. Los botones individuales de cada card siguen igual.
+// ---------------------------------------------------------------------------
+function getPlanSelectedIds(clientId){
+  return Array.from(document.querySelectorAll(`input.plan-select[data-client="${clientId}"]:checked`)).map(cb => cb.dataset.itemId);
+}
+function updatePlanBulkBar(clientId){
+  const all = document.querySelectorAll(`input.plan-select[data-client="${clientId}"]`);
+  const selected = getPlanSelectedIds(clientId);
+  const selectAll = document.getElementById(`planSelectAll-${clientId}`);
+  if(selectAll){
+    selectAll.checked = all.length > 0 && selected.length === all.length;
+    selectAll.indeterminate = selected.length > 0 && selected.length < all.length;
+  }
+  const counter = document.getElementById(`planSelCount-${clientId}`);
+  if(counter) counter.textContent = selected.length ? `${selected.length} seleccionada(s)` : 'Ninguna seleccionada';
+  ['planBulkApprove', 'planBulkReject'].forEach(prefix => {
+    const btn = document.getElementById(`${prefix}-${clientId}`);
+    if(btn) btn.disabled = selected.length === 0;
+  });
+  all.forEach(cb => {
+    const card = cb.closest('.card');
+    if(card) card.classList.toggle('plan-selected', cb.checked);
+  });
+}
+function togglePlanSelectAll(clientId, checked){
+  document.querySelectorAll(`input.plan-select[data-client="${clientId}"]`).forEach(cb => { cb.checked = checked; });
+  updatePlanBulkBar(clientId);
+}
+async function bulkReviewContentPlanItems(clientId, status){
+  const ids = getPlanSelectedIds(clientId);
+  if(!ids.length){ alert('Seleccioná al menos un post.'); return; }
+  const verbo = status === 'approved' ? 'APROBAR' : 'RECHAZAR';
+  if(!confirm(`¿${verbo} ${ids.length} post(s) seleccionado(s)?`)) return;
+  const reviewed_at = new Date().toISOString();
+  const results = await Promise.all(ids.map(id => {
+    const patch = { status, reviewed_at };
+    if(status === 'approved'){
+      // Al aprobar en lote se guarda también lo que está escrito en cada
+      // card (texto + hashtags), para que se publique tal cual se ve.
+      const capEl = document.getElementById(`plan-caption-${id}`);
+      const tagEl = document.getElementById(`plan-hashtags-${id}`);
+      if(capEl) patch.caption = capEl.value;
+      if(tagEl) patch.hashtags = tagEl.value;
+    }
+    return sb.from('socialbot_content_plan_items').update(patch).eq('id', id);
+  }));
+  const failed = results.filter(r => r.error);
+  if(failed.length) alert(`${failed.length} de ${ids.length} no se pudieron actualizar: ${failed[0].error.message}`);
+  loadClients();
+}
+
+export { buildPlanCalendarHtml, buildPlanHistoryHtml, bulkReviewContentPlanItems, reviewContentPlanItem, saveContentPlanItem, setPlanView, togglePlanSelectAll, updatePlanBulkBar };
 
 // Exposicion a window: estas funciones se llaman desde atributos
 // onclick="..." embebidos en HTML generado dinamicamente (renderPostsList,
@@ -98,3 +151,6 @@ export { buildPlanCalendarHtml, buildPlanHistoryHtml, reviewContentPlanItem, sav
 window.reviewContentPlanItem = reviewContentPlanItem;
 window.saveContentPlanItem = saveContentPlanItem;
 window.setPlanView = setPlanView;
+window.bulkReviewContentPlanItems = bulkReviewContentPlanItems;
+window.togglePlanSelectAll = togglePlanSelectAll;
+window.updatePlanBulkBar = updatePlanBulkBar;

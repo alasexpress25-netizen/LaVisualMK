@@ -377,3 +377,13 @@
   #installBanner .installBtns{ display:flex; gap:6px; flex-shrink:0; }
   #installBanner button{ font-size:12.5px; padding:7px 12px; }
   #installBanner button.dismiss{ background:transparent; color:#fff; opacity:0.7; border:1px solid rgba(255,255,255,0.3); }
+
+  /* Plan semanal: seleccion y acciones masivas */
+  .plan-bulk-bar{ display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin-top:8px; padding:10px 14px; border:1px solid var(--gold); border-radius:12px; position:sticky; top:var(--topbar-h, 64px); z-index:5; background:var(--dark2); }
+  .plan-bulk-all{ display:flex; align-items:center; gap:8px; cursor:pointer; font-size:13px; }
+  .plan-bulk-count{ font-size:12px; color:var(--muted); }
+  .plan-bulk-actions{ display:flex; flex-wrap:wrap; gap:8px; margin-left:auto; }
+  .plan-bulk-actions button:disabled{ opacity:.4; cursor:not-allowed; }
+  .plan-card-head{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  input.plan-select, .plan-bulk-all input{ width:18px; height:18px; accent-color:var(--gold); cursor:pointer; flex:none; }
+  .card.plan-selected{ box-shadow:0 0 0 2px var(--gold); }
